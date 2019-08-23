@@ -137,8 +137,9 @@
     <div class="tab-content">
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-home-tab">
-        <h3 class="control-sidebar-heading">Добро пожаловать, {{Auth::user()->name}}!</h3>
+        <h3 class="control-sidebar-heading">Добро пожаловать</h3>
         <ul class="control-sidebar-menu">
+        <!--
           <li>
             
               <div class="menu-info">
@@ -151,7 +152,7 @@
                   <a href="{{URL::to('/')}}/logout"><i class="fa fa-sign-out"></i> <span class="">Выйти</span></a>
               </div>
           </li>
-
+-->
         </ul>
         <!-- /.control-sidebar-menu -->
 

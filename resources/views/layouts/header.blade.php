@@ -2,7 +2,7 @@
 <div class="container">
 
 <!-- Главная: -->
-    <b><a class="navbar-brand abs " href="#">Agargo</a></b>
+    <b><a class="navbar-brand abs " href="{{URL::to('/')}}">Agargo</a></b>
 <!-- /Главная -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
         <span class="navbar-toggler-icon"></span>
@@ -99,30 +99,49 @@
 </nav>
 
 
-<div class="container-fluid mt-3 text-center">
-<h3>Сервис поиска организаций и услуг</h3>
+<div class="container-fluid text-center">
+<h3 class="pt-5 pb-3">Сервис поиска организаций и услуг</h3>
 </div>
-<!-- Поиск: --->      
-<div class="container-fluid mt-3 bg-light">
-    <div class="row justify-content-center">
-        <div class="p-2">
 
-<div class="main">
-    
-  <!-- Another variation with a button -->
-  <div class="input-group">
-    <input type="text" class="form-control" placeholder="Search this blog">
-    <div class="input-group-append">
-      <button class="btn btn-secondary" type="button">
-        <i class="fa fa-search"></i>
-      </button>
-    </div>
-  </div>
-  
-</div>
+
+<!-- Поиск: ---> 
+<div class="container-fluid mt-3 bg-light">
+    <div class="row">
         
+        
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 p-2">
+            <div class="border border-primary bg-white top-search">
+
+<div class="container">
+    <div class="row">
+        <div class="col-8 p-2">
+            <input type="text" class="top-search-form" placeholder="Поиск по организациям и услугам">
+        </div>
+        <div class="col-2 p-2 top-search-category">
+            <a href="" class="top-search-category-link">
+                <span class="text-muted">Категории <i class="fa fa-angle-down" aria-hidden="true"></i></span>
+            </a>
         
         </div>
+
+            <div class="col-2 p-2 top-search-block text-white text-center bg-primary">
+                <a href="" class="top-search-button">       
+                    Найти 
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </a>
+            </div>
+        
+
+    </div>
+</div>
+     
+            </div>
+        </div>
+    </div>
+</div>
+
     </div>
 </div>
 <!-- /Поиск ---> 

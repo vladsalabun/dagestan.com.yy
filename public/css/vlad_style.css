@@ -1,4 +1,41 @@
+*:focus {
+    outline: none !important;
+    box-shadow: none;
+}
 .dropdown-towns {
     width: 300px !important;
     height: 150px !important;
 }
+
+.top-search {
+    border-radius: 50px;
+}
+.top-search-block {
+    border-radius: 50px;
+    
+}
+.top-search-button {
+    display:block;
+    color: #fff;
+    margin: 0px !important;
+}
+.top-search-button:hover {
+    text-decoration: none;
+    color: #fff;
+
+}
+
+.top-search-form {
+    border: none;
+    width: 100%; 
+    margin: 0px !important;
+    padding-left: 10px;
+}
+
+.top-search-category {
+    border-left: 1px #ccc solid;
+}
+.top-search-category-link:hover {
+    text-decoration: none;
+}
+

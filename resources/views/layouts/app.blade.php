@@ -30,9 +30,6 @@
     <script src="{{ asset('js/tempus_dominus.js') }}"></script>
     <script src="{{ asset('js/ckeditor.js') }}"></script>
 
-    <!-- Шрифты: -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
     <!-- Стили: -->
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
