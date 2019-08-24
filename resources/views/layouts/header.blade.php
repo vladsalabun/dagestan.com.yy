@@ -100,7 +100,7 @@
 
 
 <div class="container-fluid text-center">
-<h3 class="pt-5 pb-3">Сервис поиска организаций и услуг</h3>
+<h1 class="pt-5 pb-3">Сервис поиска организаций и услуг</h1>
 </div>
 
 

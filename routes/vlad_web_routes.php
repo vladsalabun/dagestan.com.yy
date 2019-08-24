@@ -9,8 +9,7 @@
 Route::get('/', 'FrontController@index');
 Route::get('/add_company', 'FrontController@add_company');
 Route::get('/add_expert', 'FrontController@add_expert');
-Route::get('/company/{id}', 'FrontController@company_page');
-Route::get('/expert/{id}', 'FrontController@expert_page');
+Route::get('/ad/{id}', 'FrontController@ad_page');
 
 
 Route::get('/home', 'HomeController@index')->name('home');

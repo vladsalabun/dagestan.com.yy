@@ -1,6 +1,12 @@
+h1,h2 {
+    font-family: Roboto;
+}
+
+
 *:focus {
     outline: none !important;
-    box-shadow: none;
+    box-shadow: none; 
+    background: none;
 }
 .dropdown-towns {
     width: 300px !important;
@@ -30,6 +36,7 @@
     width: 100%; 
     margin: 0px !important;
     padding-left: 10px;
+    background: none;
 }
 
 .top-search-category {
@@ -39,3 +46,70 @@
     text-decoration: none;
 }
 
+.recommendations-buttons {
+    border-radius: 50px;
+}
+
+/* Рекомендации: */
+.recommendations-buttons {
+    border-radius: 50px;
+}
+.recommendation-link {
+    font-size: 17px;
+}
+
+.recommendation-img-wrap {
+  position: relative;
+}
+.recommendation-img-wrap > .recommendation-on-img {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+.recommendation-on-img {
+    margin-bottom: 22px;
+    color: #4384be;
+}
+.recommendation-on-img-left {
+    background-color: rgb(255, 255, 255, 0.8);
+    float: left;
+    margin-top: 2px;
+    margin-left: 10px;
+    padding: 2px 7px 2px 7px; 
+    border-radius: 50px;
+}
+.recommendation-on-img-right {
+    background-color: rgb(255, 255, 255, 0.8);
+    float: left;
+    margin-top: 2px;
+    margin-left: 10px;
+    padding: 2px 7px 2px 7px; 
+    border-radius: 50px;
+}
+
+/* Одно объявление: */
+.ad_extend {
+    font-weight: bold;
+}
+.ad-info { color: #6e98ca; }
+.ad-address-block { background: #e5ecf6; }
+.ad-address { padding: 7px 15px 7px 15px; border-radius: 50px; }
+
+.ad-stars-block { }
+.ad-stars { padding: 7px 15px 7px 15px; border-radius: 50px; }
+.ad-stars-count-block { padding: 7px 15px 7px 15px; border-radius: 50px; }
+.ad-stars-count { }
+
+.ad-map { display: flex; align-items: center; justify-content: center; }
+
+.ad-tel-block { background: #599d50; color: #fff; }
+.ad-tel { padding: 7px 15px 7px 15px; border-radius: 50px; }
+
+.give-star {
+    font-size: 20px;
+    color: #4485bd;
+}
+.ad-stars-rounding {
+    border-radius: 50px;
+}

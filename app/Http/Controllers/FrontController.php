@@ -11,16 +11,13 @@ class FrontController extends Controller
 {
     public function index()
 	{
-        $tickets = 1;
-        return view('front.index',compact('tickets'));
+        return view('front.index');
     } 
     
-    public function new_ticket()
+    
+    // Страница объявления:
+    public function ad_page($id)
 	{
-        $tickets = 1;
-        return view('front.add_ticket',compact('tickets'));
+        return view('front.ad_page', compact('id'));
     }
-    
-    
-
 }

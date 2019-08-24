@@ -30,12 +30,15 @@
     <script src="{{ asset('js/tempus_dominus.js') }}"></script>
     <script src="{{ asset('js/ckeditor.js') }}"></script>
 
+
     <!-- Стили: -->
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/jquery-ui_dialog.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/tempus_dominus.css') }}" rel="stylesheet">
     <link href="{{ asset('css/vlad_style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/vlad_carousel.css') }}" rel="stylesheet">
     
 </head>
 <body>
