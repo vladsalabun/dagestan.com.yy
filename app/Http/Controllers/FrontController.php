@@ -20,4 +20,13 @@ class FrontController extends Controller
 	{
         return view('front.ad_page', compact('id'));
     }
+    
+    // Список специалистов:
+    public function company_page()
+	{
+        return view('front.company_page');
+    }
+
+    
+    
 }

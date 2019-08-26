@@ -8,6 +8,14 @@ h1,h2 {
     box-shadow: none; 
     background: none;
 }
+.underline {
+    text-decoration: underline;
+}
+.underline-dotted {
+    text-decoration: none;
+    border-bottom: 1px dotted;
+}
+
 .dropdown-towns {
     width: 300px !important;
     height: 150px !important;
@@ -44,9 +52,10 @@ h1,h2 {
 }
 .top-search-category-link:hover {
     text-decoration: none;
+    cursor: pointer;
 }
 
-.recommendations-buttons {
+.add-button {
     border-radius: 50px;
 }
 
@@ -112,4 +121,24 @@ h1,h2 {
 }
 .ad-stars-rounding {
     border-radius: 50px;
+}
+
+/* Компании */
+.company-link {
+    text-decoration: none;
+    color: #000;
+}
+.company-link:hover {
+    background: #f8f9fa;
+    text-decoration: none;
+}
+.company-page-company-link {
+    color: #000;
+    font-size: 17px;
+    font-weight: bold;
+}
+.ad-address-block-companies-page { background: #e5ecf6; }
+#companies_map {
+    height: 250px;
+    margin-bottom: 20px;
 }

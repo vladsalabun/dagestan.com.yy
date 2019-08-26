@@ -45,9 +45,9 @@
 <!-- Рекомендации: --->
 <div class="container mt-5">
     <div class="row pt-5">
-        <div class="col-6"><h3>Рекомендации для вас:</h3>
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6"><h3>Рекомендации для вас:</h3>
         </div>
-        <div class="col-6 text-right">
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 text-right">
             <span class="btn btn-primary recommendations-buttons">Все</span>
             <span class="btn btn-light recommendations-buttons text-secondary">Организации</span>
             <span class="btn btn-light recommendations-buttons text-secondary">Специалисты</span>
