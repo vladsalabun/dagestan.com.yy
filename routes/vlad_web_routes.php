@@ -7,8 +7,10 @@
 */
 
 Route::get('/', 'FrontController@index');
-Route::get('/add_company', 'FrontController@add_company');
-Route::get('/add_expert', 'FrontController@add_expert');
+
+Route::get('/add_ad', 'FrontController@add_ad');
+Route::post('/post_add_ad', 'FrontController@post_add_ad');
+
 Route::get('/ad/{id}', 'FrontController@ad_page');
 Route::get('/company', 'FrontController@company_page');
 

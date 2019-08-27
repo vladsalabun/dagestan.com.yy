@@ -32,13 +32,13 @@
     <h5 class="text-primary mb-3">Организации:</h6>
      
   <a href="" class="company-link">
-    <div class="w-100 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Лазер</div>
+    <div class="w-100 mb-1 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Лазер</div>
   </a>
   <a href="" class="company-link">
-    <div class="w-100 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Спа</div>
+    <div class="w-100 mb-1 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Спа</div>
   </a>
   <a href="" class="company-link">
-    <div class="w-100 bg-primary text-white pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Другое</div>
+    <div class="w-100 mb-1 bg-primary text-white pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Другое</div>
   </a>
   
   
@@ -46,13 +46,13 @@
     <h5 class="text-primary mt-3">Специалисты:</h6>
             
   <a href="" class="company-link">
-    <div class="w-100 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Лазер</div>
+    <div class="w-100 mb-1 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Лазер</div>
   </a>
   <a href="" class="company-link">
-    <div class="w-100 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Спа</div>
+    <div class="w-100 mb-1 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Спа</div>
   </a>
   <a href="" class="company-link">
-    <div class="w-100 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Другое</div>
+    <div class="w-100 mb-1 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Другое</div>
   </a>
 <!---- /ЛЕВОЕ МЕНЮ ---->    
         </div>

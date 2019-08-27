@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use URL;
 use Storage;
+use Auth;
 
 class FrontController extends Controller
 {
@@ -26,7 +27,24 @@ class FrontController extends Controller
 	{
         return view('front.company_page');
     }
+    
+    // Страница добавления объявления:
+    public function add_ad()
+	{
+        if (Auth::check()){
+            return view('front.add_ad');
+        }
+        return redirect('login'); 
+    }
+    
 
+    public function post_add_ad(Request $request)
+	{
+        // TODO: auth!
+        
+        dd($request);
+    }
+    
     
     
 }

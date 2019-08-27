@@ -24,10 +24,11 @@
         <ul class="navbar-nav ml-auto">
         
             <li class="nav-item">
-                <a class="nav-link" href="" data-target="#myModal" data-toggle="modal">
+                <a class="nav-link" href="{{URL::to('/')}}/add_ad">
                 <span class="border border-primary pt-1 pb-1 pl-3 pr-3 add-button text-primary">
-                    <i class="fa fa-plus" aria-hidden="true"></i> Разместить</a>
+                    <i class="fa fa-plus" aria-hidden="true"></i> Разместить
                 </span>
+                </a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link" id="TownDropdown" data-toggle="collapse" href="#TownCollapse" role="button" aria-expanded="false" aria-controls="TownCollapse">
@@ -113,10 +114,10 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-6 col-md-8 col-lg-8 col-xl-8 p-2">
+        <div class="col-5 col-md-8 col-lg-8 col-xl-8 p-2">
             <input type="text" class="top-search-form" placeholder="Поиск услуг">
         </div>
-        <div class="col-3 col-md-2 col-lg-2 col-xl-2 p-2 top-search-category">
+        <div class="col-4 col-md-2 col-lg-2 col-xl-2 p-2 top-search-category">
             <span class="text-muted top-search-category-link" data-toggle="collapse" href="#CategoryCollapse" role="button" aria-expanded="false" aria-controls="CategoryCollapse">
             Категории 
             <i class="fa fa-angle-down" aria-hidden="true"></i>
