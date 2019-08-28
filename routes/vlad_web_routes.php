@@ -38,6 +38,11 @@ Route::group(['prefix' => 'cp'], function () {
     Route::get('/towns', 'AdminMainController@towns');
     Route::get('/pages', 'PagesController@index');
     Route::get('/add_page', 'PagesController@add_page');
+        Route::post('/post_add_page', 'PagesController@post_add_page');
     Route::get('/edit_page/{id}', 'PagesController@edit_page');
+        Route::post('/post_edit_page', 'PagesController@post_edit_page');
+    
+    
+    
     
 });

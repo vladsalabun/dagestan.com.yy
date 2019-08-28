@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\OptionsController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use App\Pages;
 
 
 /**
@@ -82,6 +84,33 @@ Route::get('/get_towns', function (Request $request) {
         
     } else {
         $array = array('status' => 404, 'error' => 'Нет городов.');
+    }
+    
+    return response()->json($array);
+    
+});
+
+/**
+ *      Проверка слага:
+ */
+Route::get('/check_slug', function (Request $request) {
+    
+    // Создаю слаг:
+    $slug = Str::slug($request->slug, '-');
+        
+    // Проверяю есть ли в базе данных такой слаг:
+    $check_slug = Pages::where('slug', $slug)->first();
+    
+    // Если дубль, изменяю слаг:
+    if($check_slug != null) {
+        $array = array(
+            'status' => 404
+        );
+    } else {
+        $array = array(
+            'status' => 200,
+            'slug' => $slug,
+        );
     }
     
     return response()->json($array);
