@@ -7,12 +7,17 @@ use DB;
 use URL;
 use Storage;
 use Auth;
+use App\Pages;
 
 class FrontController extends Controller
 {
     public function index()
 	{
         return view('front.index');
+    } 
+    public function error404()
+	{
+        return view('front.404');
     } 
     
     
@@ -36,7 +41,17 @@ class FrontController extends Controller
         }
         return redirect('login'); 
     }
-    
+   
+    // Статичные страницы:
+    public function page_page($slug)
+	{
+        $page = Pages::where('slug',$slug)->where('publish_status', 1)->first();
+        if($page == null) {
+            return redirect('/404'); 
+        }
+        return view('front.page', compact('page'));
+    }
+   
 
     public function post_add_ad(Request $request)
 	{
@@ -44,6 +59,8 @@ class FrontController extends Controller
         
         dd($request);
     }
+    
+    
     
     
     

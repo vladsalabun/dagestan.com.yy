@@ -23,7 +23,7 @@ Route::get('/get_root_categories', function (Request $request) {
             $array['items'][$key] = $value;
         }
     } else {
-        $array = array('status' => 404, 'error' => 'Нет баннеров.');
+        $array = array('status' => 404, 'error' => 'Нет категорий.');
     }
     
     return response()->json($array);
@@ -52,7 +52,7 @@ Route::get('/get_sub_categories', function (Request $request) {
                 $array['items'][$key] = $value;
             }
         } else {
-            $array = array('status' => 404, 'error' => 'Нет баннеров.');
+            $array = array('status' => 404, 'error' => 'Нет категорий.');
         }
     }
     

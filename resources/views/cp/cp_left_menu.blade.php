@@ -26,6 +26,12 @@
           <i class="fa fa-map-pin"></i> <span>Города</span>
       </a>
     </li>
-    
+   
+    <li class="active">
+      <a href="{{URL::to('/')}}/cp/pages">
+          <i class="fa fa-file-text-o"></i> <span>Страницы</span>
+      </a>
+    </li>
+   
 </ul>
 <!-- /.sidebar-menu -->

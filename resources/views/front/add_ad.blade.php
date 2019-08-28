@@ -35,7 +35,7 @@
 <div class="form-group mb-3">
     <input type="text" name="title" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Название организации *" required>
 </div>
-<div class="form-group mb-3">
+<div class="form-group mb-3 form-town-block">
     <select class="form-control agagro-form-style towns-selection pt-2 pb-2 pl-3 pr-1" name="town" required></select>
 </div>
 <div class="form-group mb-3">
@@ -163,7 +163,7 @@
 
 
 
-<div class="form-group mb-3">
+<div class="form-group mb-3 form-town-block">
     <select class="form-control agagro-form-style towns-selection pt-2 pb-2 pl-3 pr-1" name="town" required></select>
 </div>
 <div class="form-group mb-3">
@@ -281,6 +281,7 @@ $.ajax({
 })
 .done (function (data) {
     console.log('Городов: ' +data.items.length);
+    
     $('.towns-selection').text(''); 
     
     $('.towns-selection').append('<option value="">-- Выберите город * --</option>');
@@ -293,6 +294,7 @@ $.ajax({
     } else {
         // hide town field:
         $('.towns-selection').hide();
+        $('.form-town-block').append('Ошибка! В базе данных нет городов. Обязательно сообщите об этом администратору!');
     }
 
 })
@@ -307,7 +309,6 @@ $.ajax({
 })
 .done (function (data) {
     //console.log('Родительских категорий: ' + data.items.length);
-    console.log(data);
 
     $('.root-category-selection').text(''); 
     

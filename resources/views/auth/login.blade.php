@@ -1,44 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
 
-                <div class="card-body">
+<div class="container mt-2">
+    <div class="row pt-5">
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <h3 class="mb-4">Авторизация:</h3>
+           <p>Авторизуйтесь, чтобы получить возможность добавлять объявления.</p>
+           <p>Поля, отмеченные звездочкой (*), обязательны для заполнения. Правила пользования услугами можно прочитатть <a href="">здесь</a>.</p>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
+<div class="form-group mb-3">
+    <input type="email" name="email" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="e-mail *" value="{{ old('email') }}" required>
+@if ($errors->has('email'))
+    <span class="help-block">
+        <strong>{{ $errors->first('email') }}</strong>
+    </span>
+@endif
+</div>
+<div class="form-group mb-3">
+    <input type="password" name="password"class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Пароль *" required>
+@if ($errors->has('password'))
+    <span class="help-block">
+        <strong>{{ $errors->first('password') }}</strong>
+    </span>
+@endif
+</div>
+   
+<div class="form-group mb-3">
+    <input type="submit" class="btn btn-primary add-button" value="Авторизоваться">
+</div>
+   
+<!---
                         <div class="form-group row">
                             <div class="col-md-6 offset-md-4">
                                 <div class="form-check">
@@ -50,7 +44,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -63,11 +56,62 @@
                                     </a>
                                 @endif
                             </div>
-                        </div>
+---> 
                     </form>
-                </div>
-            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <h3 class="mb-4">Регистрация:</h3>
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
+
+<div class="form-group mb-3">
+    <input type="text" name="name" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3 @error('name') is-invalid @enderror" placeholder="Имя *" value="{{ old('name') }}" required>
+    @error('name')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+</div>
+<div class="form-group mb-3">
+    <input id="email" type="email"  name="email" value="{{ old('email') }}" autocomplete="email" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3 @error('email') is-invalid @enderror" placeholder="e-mail *" required>
+    @error('email')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+</div>
+
+<div class="form-group mb-3">
+    <input id="password" type="password" name="password" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3 @error('password') is-invalid @enderror" placeholder="Пароль *" required>
+    @error('password')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+</div>
+
+
+<div class="form-group mb-3">
+    <input id="password-confirm" type="password" name="password_confirmation" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3 @error('password') is-invalid @enderror" placeholder="Подтверждение пароля *" required>
+    @error('password_confirmation')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+</div>
+
+<div class="form-group mb-3">
+    <input type="submit" class="btn btn-primary add-button" value="Зарегистрироваться">
+</div>
+
+                    </form>
+            
+            
         </div>
     </div>
 </div>
+
+
+
+
 @endsection
