@@ -29,31 +29,38 @@
         <div class="col-sm-12 col-md-12 col-lg-3 col-xl-3 mb-3">
 
 <!---- ЛЕВОЕ МЕНЮ: ---->
-    <h5 class="text-primary mb-3">Организации:</h6>
-     
-  <a href="" class="company-link">
-    <div class="w-100 mb-1 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Лазер</div>
-  </a>
-  <a href="" class="company-link">
-    <div class="w-100 mb-1 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Спа</div>
-  </a>
-  <a href="" class="company-link">
-    <div class="w-100 mb-1 bg-primary text-white pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Другое</div>
-  </a>
-  
-  
-     
-    <h5 class="text-primary mt-3">Специалисты:</h6>
-            
-  <a href="" class="company-link">
-    <div class="w-100 mb-1 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Лазер</div>
-  </a>
-  <a href="" class="company-link">
-    <div class="w-100 mb-1 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Спа</div>
-  </a>
-  <a href="" class="company-link">
-    <div class="w-100 mb-1 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">Другое</div>
-  </a>
+<?php 
+    if(is_array($categories_tree)) {
+        
+        $tmp = 0;
+        
+        foreach ($categories_tree as $name => $sub_array) {
+            $tmp++;
+?>
+        <a href="#root_menu_{{$tmp}}" plus_id="{{$tmp}}" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="root_menu_{{$tmp}}" class="root_menu_a">
+            <div class="d-flex justify-content-between">
+                <h5 class="text-primary mb-3">{{$name}}</h6>
+                <span class="p-1" id="plus_id_{{$tmp}}"><i class="fa fa-plus" aria-hidden="true"></i></span>
+            </div>
+        </a>
+<?php 
+        foreach ($sub_array as $sub_id => $sub_name) {
+?> 
+            <div class="collapse" id="root_menu_{{$tmp}}">
+                <a href="" class="company-link">
+                    <div class="w-100 mb-1 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">{{$sub_name}}</div>
+                </a>
+            </div>
+<?php
+        }
+?>
+
+<?php
+        }
+    }
+?>
+    
+
 <!---- /ЛЕВОЕ МЕНЮ ---->    
         </div>
         
@@ -130,7 +137,28 @@
 </div>
 
 
+<script>
 
+
+
+$('body').on('click', '.root_menu_a', function() {
+    var plus_id = $(this).attr('plus_id');
+
+    $('#root_menu_' + plus_id).on('show.bs.collapse', function () {
+      // do something...
+      $('#plus_id_' + plus_id).text('');
+      $('#plus_id_' + plus_id).append('<i class="fa fa-minus" aria-hidden="true"></i>');
+    })
+    $('#root_menu_' + plus_id).on('hide.bs.collapse', function () {
+      // do something...
+      $('#plus_id_' + plus_id).text('');
+      $('#plus_id_' + plus_id).append('<i class="fa fa-plus" aria-hidden="true"></i>');
+    })
+    
+});
+
+
+</script>
 
 
 @endsection

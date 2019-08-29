@@ -59,7 +59,17 @@ h1,h2 {
     border-radius: 50px;
 }
 
+
+
 /* Рекомендации: */
+.root_menu_a {
+    text-decoration: none;
+}
+.root_menu_a:hover {
+    text-decoration: none;
+    background: #f8f9fa;
+}
+
 .recommendations-buttons {
     border-radius: 50px;
 }

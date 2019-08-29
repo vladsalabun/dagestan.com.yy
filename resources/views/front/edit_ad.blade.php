@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('page_header')Добавить объявление @endsection
+@section('page_header')Объявление {{$ad->id}} @endsection
 
 @section('content')
 
@@ -11,44 +11,43 @@
     <div class="row pt-5">
         <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
 @if (Auth::check())
-    <h3 class="mb-4">Добавить объявление:</h3>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb bg-light">
+    <li class="breadcrumb-item"><a href="{{URL::to('/')}}/home">Личный кабинет</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Редактировать объявление №{{$ad->id}}:</li>
+  </ol>
+</nav>
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active" id="organization-tab" data-toggle="tab" href="#organization" role="tab" aria-controls="organization" aria-selected="true">Организация</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="specialist-tab" data-toggle="tab" href="#specialist" role="tab" aria-controls="specialist" aria-selected="false">Специалист</a>
-  </li>
-</ul>
-<div class="tab-content" id="myTabContent">
 
+    <h3 class="mb-4">Редактировать объявление №{{$ad->id}}:</h3>
+
+@if ($ad->type == 1) 
 
 <!-- ФОРМА ДОБАВЛЕНИЯ ОРГАНИЗАЦИИ: --->
 <div class="tab-pane fade show active mt-5" id="organization" role="tabpanel" aria-labelledby="organization-tab">
 
-    <form method="post" action="{{URL::to('/')}}/post_add_ad" autocomplete="off" id="">
+    <form method="post" action="{{URL::to('/')}}/post_edit_ad" autocomplete="off" id="">
         {{ csrf_field() }}
         <input type="hidden" name="type" value="1">
 
 
 <div class="form-group mb-3">
-    <input type="text" name="title" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Название организации *" required>
+    <input type="text" name="title" value="{{$ad->title}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Название организации *" required>
 </div>
 <div class="form-group mb-3 form-town-block">
     <select class="form-control agagro-form-style towns-selection pt-2 pb-2 pl-3 pr-1" name="town" required></select>
 </div>
 <div class="form-group mb-3">
-    <input type="text" name="address" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Адрес *" required>
+    <input type="text" name="address" value="{{$ad->address}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Адрес *" required>
 </div>
 <div class="form-group mb-3">
-    <input type="text" name="phone" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Телефон *" required>
+    <input type="text" name="phone" value="{{$ad->phone}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Телефон *" required>
 </div>
 <div class="form-group mb-3">
-    <input type="text" name="email" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="e-mail">
+    <input type="text" name="email" value="{{$ad->email}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="e-mail">
 </div>
 <div class="form-group mb-3">
-    <input type="text" name="working_hours" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="График работы *" required>
+    <input type="text" name="working_hours" value="{{$ad->working_hours}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="График работы *" required>
 </div>
 
     
@@ -63,7 +62,7 @@
 
 <div class="form-group mb-4">
     <label for="exampleFormControlTextarea1">Кратко об организации *:</label>
-    <textarea class="form-control agagro-form-style-textarea" name="description" rows="3" required></textarea>
+    <textarea class="form-control agagro-form-style-textarea" rows="3" name="description" required>{{$ad->description}}</textarea>
 </div>
 
     <!-- Соц. сети: --->
@@ -72,10 +71,10 @@
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
         
 <div class="form-group mb-3">
-    <input type="text" name="instagram" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Instagram">
+    <input type="text" name="instagram" value="{{$ad->instagram}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Instagram">
 </div>
 <div class="form-group mb-3">
-    <input type="text" name="fb" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Facebook">
+    <input type="text" name="fb" value="{{$ad->fb}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Facebook">
 </div>
 
         
@@ -83,10 +82,10 @@
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
         
 <div class="form-group mb-3">
-    <input type="text" name="vk" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="VK">
+    <input type="text" name="vk" value="{{$ad->vk}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="VK">
 </div>
 <div class="form-group mb-3">
-    <input type="text" name="ok" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="OK">
+    <input type="text" name="ok" value="{{$ad->ok}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="OK">
 </div>
       
         </div>
@@ -94,11 +93,20 @@
 </div>
     <!-- /Соц. сети --->
 
-<div class="form-group mb-3">
+<div class="form-group mb-3"> 
+    @if ($ad->type != null)
+    <p>Текущая фотография:</p>
+    <p><img src="{{$ad->img}}" class="w-100"></p>
+    <label for="exampleFormControlFile1">Загрузить новую:</label>
+    <div class="agagro-form-style pt-2 pb-2 pl-3 pr-3">
+        <input type="file" name="img" class="form-control-file" id="exampleFormControlFile1" placeholder="11">
+    </div>
+    @else
     <label for="exampleFormControlFile1">Фотография:</label>
     <div class="agagro-form-style pt-2 pb-2 pl-3 pr-3">
         <input type="file" name="img" class="form-control-file" id="exampleFormControlFile1" placeholder="11">
     </div>
+    @endif
 </div>
 
 
@@ -110,25 +118,24 @@
 </div>
 
     <div class="form-group mb-3">
-        <input type="submit" name="submit" class="btn btn-primary add-button" id="submit_organization" value="Разместить">
+        <input type="submit" name="delete" class="btn btn-danger add-button" id="submit_organization" value="Удалить объявление">
+        <input type="submit" name="submit" class="btn btn-primary add-button" id="submit_organization" value="Сохранить изменения">
     </div>
 
     </form>
 
 </div>
 <!-- /ФОРМА ДОБАВЛЕНИЯ ОРГАНИЗАЦИИ --->
-  
-  
-  
-  
-  
-  
-  
+ 
+
+
+ 
+@elseif ($ad->type == 2) 
+
   
 <!-- ФОРМА ДОБАВЛЕНИЯ СПЕЦИАЛИСТА: --->
-<div class="tab-pane fade mt-5" id="specialist" role="tabpanel" aria-labelledby="specialist-tab">
 
-    <form method="post" action="{{URL::to('/')}}/post_add_ad" autocomplete="off" id="">
+    <form method="post" action="{{URL::to('/')}}/post_edit_ad" autocomplete="off" id="">
         {{ csrf_field() }}
         <input type="hidden" name="type" value="2">
 
@@ -198,7 +205,7 @@
 
 <div class="form-group mb-4">
     <label for="exampleFormControlTextarea1">Кратко об организации *:</label>
-    <textarea class="form-control agagro-form-style-textarea" rows="3" name="description" required></textarea>
+    <textarea class="form-control agagro-form-style-textarea" rows="3" required name="description"></textarea>
 </div>
 
     <!-- Соц. сети: --->
@@ -229,11 +236,20 @@
 </div>
     <!-- /Соц. сети --->
 
-<div class="form-group mb-3">
+<div class="form-group mb-3"> 
+    @if ($ad->type != null)
+    <p>Текущая фотография:</p>
+    <p><img src="{{$ad->img}}" class="w-100"></p>
+    <label for="exampleFormControlFile1">Загрузить новую:</label>
+    <div class="agagro-form-style pt-2 pb-2 pl-3 pr-3">
+        <input type="file" name="img" class="form-control-file" id="exampleFormControlFile1" placeholder="11">
+    </div>
+    @else
     <label for="exampleFormControlFile1">Фотография:</label>
     <div class="agagro-form-style pt-2 pb-2 pl-3 pr-3">
         <input type="file" name="img" class="form-control-file" id="exampleFormControlFile1" placeholder="11">
     </div>
+    @endif
 </div>
 
 
@@ -245,17 +261,18 @@
 </div>
 
     <div class="form-group mb-3">
-        <input type="submit" name="submit" class="btn btn-primary add-button" id="submit_specialist" value="Разместить">
-        
+        <input type="submit" name="delete" class="btn btn-danger add-button" id="submit_organization" value="Удалить объявление">
+        <input type="submit" name="submit" class="btn btn-primary add-button" id="submit_organization" value="Сохранить изменения">
     </div>
 
     </form>
 
-</div>
 <!-- /ФОРМА ДОБАВЛЕНИЯ СПЕЦИАЛИСТА --->
 
+@else
+    Неверный тип объявления.
 
-</div>
+@endif 
 
 
 
@@ -283,6 +300,8 @@ $.ajax({
 .done (function (data) {
     console.log('Городов: ' +data.items.length);
     
+    var town_id = {{$ad->town_id}};
+    
     $('.towns-selection').text(''); 
     
     $('.towns-selection').append('<option value="">-- Выберите город * --</option>');
@@ -290,7 +309,12 @@ $.ajax({
     if(data.items.length > 0) {
         // show town selection:
         $.each(data.items, function(index, value) {
-            $('.towns-selection').append('<option value="' + value.id + '">' + value.town + '</option>');
+            if(town_id == value.id) {
+                var selected_town = ' selected ';
+            } else {
+                var selected_town = '';
+            }
+            $('.towns-selection').append('<option value="' + value.id + '" ' + selected_town + '>' + value.town + '</option>');
         });
     } else {
         // hide town field:

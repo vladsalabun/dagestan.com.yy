@@ -14,4 +14,33 @@ class AdsCategories extends Model
     {   
         return $this->belongsToMany('App\Ads', 'ads_has_categories', 'category_id', 'ad_id');
     }
+    
+    // TODO: Get parent category:
+    
+    // Дерево категорий:
+    public function get_tree()
+    {   
+        
+        $q = AdsCategories::where('parent_id',0)->get();
+        
+        if ($q != null) {
+            foreach ($q as $key => $value) {
+                $q_sub = AdsCategories::where('parent_id',$value->id)->get();
+                if ($q_sub != null) {
+                    
+                    $array[$value->name] = array();
+                    
+                    foreach ($q_sub as $key_sub => $value_sub) {
+                        $array[$value->name][$value_sub->id] = $value_sub->name;
+                    }
+                }
+                
+            }
+        } else {
+           $array = array(); 
+        }        
+        
+        return $array;
+    }
+    
 }

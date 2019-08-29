@@ -8,18 +8,23 @@ use URL;
 use Storage;
 use Auth;
 use App\Pages;
+use App\Ads;
+use App\AdsCategories;
 
 class FrontController extends Controller
 {
+    
+    // Главная:
     public function index()
 	{
         return view('front.index');
-    } 
+    }
+
+    // 404:
     public function error404()
 	{
         return view('front.404');
     } 
-    
     
     // Страница объявления:
     public function ad_page($id)
@@ -30,16 +35,14 @@ class FrontController extends Controller
     // Список специалистов:
     public function company_page()
 	{
-        return view('front.company_page');
+        $categories_tree = (new AdsCategories)->get_tree();
+        return view('front.company_page', compact('categories_tree'));
     }
     
     // Страница добавления объявления:
     public function add_ad()
 	{
-        if (Auth::check()){
-            return view('front.add_ad');
-        }
-        return redirect('login'); 
+        return view('front.add_ad');
     }
    
     // Статичные страницы:
@@ -54,9 +57,38 @@ class FrontController extends Controller
    
 
     public function post_add_ad(Request $request)
+	{        
+        // TODO: 
+        dd($request);
+    }
+    
+    public function edit_ad($id)
 	{
-        // TODO: auth!
+        // Ищу объявление:
+        $ad = Ads::where('id',$id)->first();
         
+        // Если не существует:
+        if($ad == null) {
+            if(Auth::check()) {
+                return redirect(URL::to('/').'/home');
+            } else {
+                return redirect(URL::to('/').'/login');
+            }
+        }
+        
+        // TODO: Если это чужое объявление:
+        /*
+        if($ad->user_id != Auth::user()->id) {
+            return redirect(URL::to('/').'/home');
+        }
+        */
+        
+        return view('front.edit_ad', compact('ad'));
+
+    }
+    public function post_edit_ad(Request $request)
+	{
+        // TODO: 
         dd($request);
     }
     
