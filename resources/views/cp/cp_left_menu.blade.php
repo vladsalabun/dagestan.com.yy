@@ -10,7 +10,7 @@
     </li>
 
     <li class="active">
-      <a href="{{URL::to('/')}}/cp/ads_categories">
+      <a href="{{URL::to('/')}}/cp/adscategories">
          <i class="fa fa-tags"></i> <span>Категории объявлений</span>
       </a>
     </li>
@@ -30,6 +30,18 @@
     <li class="active">
       <a href="{{URL::to('/')}}/cp/pages">
           <i class="fa fa-file-text-o"></i> <span>Страницы</span>
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="{{URL::to('/')}}/cp/users">
+          <i class="fa fa-users"></i> <span>Пользователи</span>
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="{{URL::to('/')}}/cp/map_config">
+          <i class="fa fa-map-o"></i> <span>Карта</span>
       </a>
     </li>
    

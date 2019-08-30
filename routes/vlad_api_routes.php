@@ -116,3 +116,5 @@ Route::get('/check_slug', function (Request $request) {
     return response()->json($array);
     
 });
+
+// TODO: get_companies_markers

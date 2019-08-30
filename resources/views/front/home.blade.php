@@ -5,7 +5,7 @@
     <div class="row pt-5">
 
 <div class="col-sm-12 col-md-8 col-lg-8 col-xl-9">
-    <h3 class="mb-4">{{ Auth::user()->name }}</h3>
+    <h3 class="mb-4">{{ Auth::user()->name }} @if (Auth::user()->is_ban == 1) <span class="text-danger">(заблокирован)</span> @endif</h3>
     <p>
         {{ Auth::user()->email }}<br>
         {{ Auth::user()->tel }}

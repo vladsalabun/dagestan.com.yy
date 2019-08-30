@@ -42,6 +42,9 @@ class FrontController extends Controller
     // Страница добавления объявления:
     public function add_ad()
 	{
+        if(Auth::user()->is_ban == 1) {
+            return redirect('/home'); 
+        }
         return view('front.add_ad');
     }
    
