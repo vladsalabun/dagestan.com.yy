@@ -16,26 +16,71 @@ use Storage;
 use File;
 use Auth;
 use App\Ads;
+use App\Towns;
+use App\Users;
    
 class AdsController extends Controller
 {
 
    public function ads()
    {
-       // TODO: Главная страница: ads 
        $items = Ads::orderBy('id', 'desc')->paginate(10);
        return view('cp.AppAds.ads', compact('items'));
    }
 
    public function add_ads()
    {
-       // TODO: Страница добавления: ads 
-       return view('cp.AppAds.add_ads');
+        $users = Users::All();
+        $google_map_key = OptionsController::get_option('google_map_key'); 
+
+        if(count($google_map_key) == 0) {
+            OptionsController::set_option('google_map_key', null);
+            $google_map_key = null;
+        } else {
+            $google_map_key = $google_map_key[0]->option_value;
+        }
+        
+        $openstreetmap_api_key = OptionsController::get_option('openstreetmap_api_key'); 
+
+        if(count($openstreetmap_api_key) == 0) {
+            OptionsController::set_option('openstreetmap_api_key', null);
+            $openstreetmap_api_key = null;
+        } else {
+            $openstreetmap_api_key = $openstreetmap_api_key[0]->option_value;
+        }
+        
+        // longitude
+        $longitude = OptionsController::get_option('longitude'); 
+
+        if(count($longitude) == 0) {
+            OptionsController::set_option('longitude', null);
+            $longitude = null;
+        } else {
+            $longitude = $longitude[0]->option_value;
+        }
+        
+        // latitude
+        $latitude = OptionsController::get_option('latitude'); 
+
+        if(count($latitude) == 0) {
+            OptionsController::set_option('latitude', null);
+            $latitude = null;
+        } else {
+            $latitude = $latitude[0]->option_value;
+        }
+        
+        $maxZoom = 18;
+        $initZoom = 13;
+        
+        $max_center = array($longitude, $latitude);
+       
+       $towns = Towns::orderBy('town', 'asc')->get();
+       return view('cp.AppAds.add_ads', compact('towns','google_map_key', 'latitude', 'longitude', 'openstreetmap_api_key','maxZoom','initZoom','max_center','users'));
    }
 
    public function post_add_ads(Request $request)
    {
-
+        dd($_POST);
        // TODO: Создать запись:
        $obj = new Ads;
 
