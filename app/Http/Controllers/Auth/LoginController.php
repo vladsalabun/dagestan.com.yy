@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Banners;
+use App\Towns;
 
 class LoginController extends Controller
 {
@@ -36,4 +38,22 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+    
+    public function get_towns()
+	{
+        return Towns::all();
+    }
+    public function get_banners()
+	{
+        return Banners::all();
+    }
+    
+    public function showLoginForm()
+    {
+        $towns = $this->get_towns();
+        $banners = $this->get_banners();
+
+        return view('auth.login', compact('towns','banners'));
+    }
+    
 }

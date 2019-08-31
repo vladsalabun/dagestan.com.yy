@@ -83,13 +83,11 @@
     <div class="row">
         <div class="col">
             <div class="collapse multi-collapse" id="TownCollapse">
-                <div class="p-3">
-                    <b>TODO: Тут будет список городов</b><br>
-            <a href="">Хасавюрт</a><br>
-            <a href="">Избербаш</a><br>
-            <a href="">Акуша</a><br>
-            <a href="">Дербент</a><br>
-            <a href="">Каспийск</a><br>
+                <div class="row">
+@forelse ($towns as $town)
+<div class="col-4 text-center">{{$town->town}}</div> 
+@empty
+@endforelse
                 </div>
             </div>
         </div>

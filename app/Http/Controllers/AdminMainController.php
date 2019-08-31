@@ -13,19 +13,5 @@ class AdminMainController extends Controller
 	{
         return view('cp.index');
     } 
-
-    public function banners() {
-        return view('cp.AppBanners.index');
-    }
-    public function ads_categories() {
-        return view('cp.AppCategories.index');
-    }
-    public function ads() {
-        return view('cp.AppAds.index');
-    }
-    public function towns() {
-        return view('cp.AppTowns.index');
-    }
-    
     
 }

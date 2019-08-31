@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use Hash;
+use App\Towns;
 
 class HomeController extends Controller
 {
@@ -23,17 +24,26 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+    public function get_towns()
+	{
+        return Towns::all();
+    }
+    public function get_banners()
+	{
+        return Banners::all();
+    }
+    
     public function index()
     {
         // TODO: where moderation 0 or 1, 2 - deleted
-        $tickets = 1;
-        return view('front.home',compact('tickets'));
+        $towns = $this->get_towns();
+        return view('front.home',compact('towns'));
     }
     
     public function edit()
     {
-        $tickets = 1;
-        return view('front.home_edit',compact('tickets'));
+        $towns = $this->get_towns();
+        return view('front.home_edit',compact('towns'));
     }
     
     

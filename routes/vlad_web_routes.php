@@ -49,15 +49,19 @@ Route::group(['prefix' => 'cp'], function () {
     Route::get('/map_config', 'MapController@map_config_page');
     Route::post('/post_edit_map_config', 'MapController@post_edit_map_config');
     
+    // Объявления:
+    Route::get('/ads', 'AdsController@ads');
+    Route::get('/edit_ads/{id}', 'AdsController@edit_ads');
+       Route::post('/post_edit_ads', 'AdsController@post_edit_ads');
+    Route::get('/add_ads', 'AdsController@add_ads');
+       Route::post('/post_add_ads', 'AdsController@post_add_ads');
+    
     // Категории объявлений:
     Route::get('/adscategories', 'AdsCategoriesController@adscategories');
     Route::get('/edit_adscategories/{id}', 'AdsCategoriesController@edit_adscategories');
        Route::post('/post_edit_adscategories', 'AdsCategoriesController@post_edit_adscategories');
     Route::get('/add_adscategories', 'AdsCategoriesController@add_adscategories');
        Route::post('/post_add_adscategories', 'AdsCategoriesController@post_add_adscategories');
-    
-    // Объявления:
-    Route::get('/ads', 'AdminMainController@ads');
 
     // Города:
     Route::get('/towns', 'TownsController@towns');
@@ -80,7 +84,12 @@ Route::group(['prefix' => 'cp'], function () {
     Route::get('/add_users', 'UsersController@add_users');
        Route::post('/post_add_users', 'UsersController@post_add_users');
     
-    
+    // Баннеры:
+    Route::get('/banners', 'BannersController@banners');
+    Route::get('/edit_banners/{id}', 'BannersController@edit_banners');
+       Route::post('/post_edit_banners', 'BannersController@post_edit_banners');
+    Route::get('/add_banners', 'BannersController@add_banners');
+       Route::post('/post_add_banners', 'BannersController@post_add_banners');
     
     
 });

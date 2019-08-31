@@ -8,19 +8,23 @@
 <div class="container-fluid">
     <div id="carouselExample" class="carousel slide" data-ride="carousel" data-interval="9000">
         <div class="carousel-inner row w-100 mx-auto" role="listbox">
+
+        <?php
+    $active_banner = 1;
+    foreach ($banners as $banner) {
         
-<div class="carousel-item col-md-3 active">
-    <img class="img-fluid mx-auto d-block" src="{{URL::to('/')}}/img/banner_template1.jpg" alt="slide 1">
-</div>
-<?php 
-    for ($i = 2; $i <= 6; $i++) {
+
+        if ($banner->img != null) {
 ?>   
-<div class="carousel-item col-md-3">
-    <img class="img-fluid mx-auto d-block" src="{{URL::to('/')}}/img/banner_template<?php echo $i; ?>.jpg" alt="slide <?php echo $i; ?>">
+<div class="carousel-item col-md-3 @if ($active_banner == 1) active @endif">
+    <img class="img-fluid mx-auto d-block" src="{{URL::to('/')}}/storage/{{$banner->img}}" alt="{{$banner->title}}">
 </div>
 <?php
+        }
+        $active_banner++;
     }
 ?>
+
         </div>
         <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
             <i class="fa fa-arrow-circle-o-left top_carousel_icons" aria-hidden="true"></i>
@@ -34,6 +38,7 @@
 </div>
 <script src="{{ asset('js/vlad_carousel.js') }}"></script>
 <!-- /Карусель баннеров --->
+
 
 
 

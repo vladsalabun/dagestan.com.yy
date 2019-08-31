@@ -4,6 +4,9 @@ use App\Http\Controllers\OptionsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Pages;
+use App\Banners;
+
+// TODO: get_companies_markers
 
 
 /**
@@ -117,4 +120,36 @@ Route::get('/check_slug', function (Request $request) {
     
 });
 
-// TODO: get_companies_markers
+/**
+ *      Баннеры на фронт:
+ */
+Route::get('/get_banners', function (Request $request) {
+    
+
+    $items = Banners::all();
+
+    if ($items != null) {
+        
+        $array['items'] = array();
+        
+        foreach ($items as $key => $value) {
+            
+            if ($value->img == null) {
+                $img_src = URL::to('/') . '/img/no-image-icon.png';
+            } else {
+                $img_src = URL::to('/') . '/storage/' . $value->img;
+            }
+            
+            $array['items'][$key] = array(
+                'title' => $value->title,
+                'img' => $img_src,
+            );
+        }
+        
+    } else {
+        $array = array('status' => 404, 'error' => 'Нет баннеров.');
+    }
+    
+    return response()->json($array);
+    
+});

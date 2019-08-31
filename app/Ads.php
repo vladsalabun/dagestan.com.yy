@@ -1,4 +1,10 @@
 <?php
+/*
+|--------------------------------------------------------------------------
+| Author: Vlad Salabun / https://t.me/vlad_salabun 
+| Model: Ads:
+|--------------------------------------------------------------------------
+*/
 
 namespace App;
 
@@ -19,6 +25,18 @@ class Ads extends Model
     public function categories()
     {
         return $this->belongsToMany('App\AdsCategories', 'ads_has_categories', 'ad_id', 'category_id');
+    }
+    
+    // Город:
+    public function town()
+    {
+        return $this->hasOne('App\Towns', 'id', 'town_id');
+    }
+    
+    // Пользователь:
+    public function user()
+    {
+        return $this->hasOne('App\Users', 'id', 'user_id');
     }
     
 }
