@@ -4,7 +4,14 @@
 
 @section('content')
 
-
+<style>
+.company_link { color: #69BEFD; text-decoration: underline; }
+.company_link:hover { cursor: pointer;}
+.company_logo { width: 30px; float: left; margin-right: 3px;}   
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>	
+<script src="{{URL::to('/')}}/adminlte/jquery/dist/jquery.min.js"></script>
 
 <!-- Добавление объявления: --->
 <div class="container mt-2">
@@ -30,6 +37,8 @@
     <form method="post" action="{{URL::to('/')}}/post_add_ad" autocomplete="off" id="" enctype="multipart/form-data">
         {{ csrf_field() }}
         <input type="hidden" name="type" value="1">
+        <input type="hidden" id="lng1" name="longitude" value="">
+        <input type="hidden" id="lat1" name="latitude" value="">
 
 
 <div class="form-group mb-3">
@@ -102,7 +111,49 @@
 </div>
 
 
-<div class="form-check mb-3 oferta-block">
+<p>Кликните по карте, чтобы указать место:</p>
+<div id="mapid1" style="width: 100%; height: 400px; "></div>
+<script>
+
+    var greenIcon = new L.Icon({
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+
+	var mymap1 = L.map('mapid1').setView([{{$max_center[0]}}, {{$max_center[1]}}], {{$initZoom}});1
+
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={{$openstreetmap_api_key}}', {
+		maxZoom: {{$maxZoom}},
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox.streets'
+	}).addTo(mymap1);
+
+    var markerGroup = L.layerGroup().addTo(mymap1);
+    
+function onMapClick1(e) {
+    markerGroup.clearLayers();
+        $("#lat1").val(e.latlng.lng.toFixed(8));
+        $("#lng1").val(e.latlng.lat.toFixed(8));
+        console.log('organization: ' + e.latlng.lng.toFixed(8) + ', '+ e.latlng.lat.toFixed(8));
+    L.marker([e.latlng.lat,e.latlng.lng], {icon: greenIcon}).addTo(markerGroup).on('click', function(e) {
+    });
+    
+}
+
+mymap1.on('click', onMapClick1);
+    
+     
+</script>
+
+
+
+<div class="form-check mt-3 mb-3 oferta-block">
   <input class="form-check-input" type="checkbox" value="1" id="oferta-check1" name="oferta" required>
   <label class="form-check-label" for="oferta">
     Ознакомлен с <a href="">публичной офертой</a> и <a href="">политикой в области обработки персональных данных</a>, все условия принимаю
@@ -126,11 +177,13 @@
   
   
 <!-- ФОРМА ДОБАВЛЕНИЯ СПЕЦИАЛИСТА: --->
-<div class="tab-pane fade mt-5" id="specialist" role="tabpanel" aria-labelledby="specialist-tab">
+<div class="tab-pane fade show active mt-5" id="specialist" role="tabpanel" aria-labelledby="specialist-tab">
 
     <form method="post" action="{{URL::to('/')}}/post_add_ad" autocomplete="off" id="">
         {{ csrf_field() }}
         <input type="hidden" name="type" value="2">
+        <input type="hidden" id="lat2" name="latitude" value="">
+        <input type="hidden" id="lng2" name="longitude" value="">
 
 
 <div class="form-group mb-3">
@@ -237,10 +290,40 @@
 </div>
 
 
-<div class="form-check mb-3 oferta-block">
+<p>Кликните по карте, чтобы указать место:</p>
+<div id="specialist_map" style="width: 100%; height: 400px; "></div>
+<script>
+
+	var mymap2 = L.map('specialist_map').setView([{{$max_center[0]}}, {{$max_center[1]}}], {{$initZoom}});
+
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={{$openstreetmap_api_key}}', {
+		maxZoom: {{$maxZoom}},
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox.streets'
+	}).addTo(mymap2);
+
+    var markerGroup2 = L.layerGroup().addTo(mymap2);
+    
+function onMapClick2(e) {
+    markerGroup2.clearLayers();
+        $("#lat2").val(e.latlng.lng.toFixed(8));
+        $("#lng2").val(e.latlng.lat.toFixed(8));
+        console.log('specialist: ' + e.latlng.lng.toFixed(8) + ', '+ e.latlng.lat.toFixed(8));
+    L.marker([e.latlng.lat,e.latlng.lng], {icon: greenIcon}).addTo(markerGroup2).on('click', function(e) {
+
+    });
+}
+
+mymap2.on('click', onMapClick2);
+     
+</script>
+
+<div class="form-check mt-3 mb-3 oferta-block">
   <input class="form-check-input" type="checkbox" value="1" id="oferta-check2" name="oferta" required>
   <label class="form-check-label" for="oferta">
-    Ознакомлен с <a href="">публичной офертой</a> и <a href="">политикой в области обработки персональных данных</a>, все условия принимаю
+    Ознакомлен с <a href="{{URL::to('')}}/page/oferta">публичной офертой</a> и <a href="{{URL::to('')}}/page/policy">политикой в области обработки персональных данных</a>, все условия принимаю
   </label>
 </div>
 
@@ -266,7 +349,7 @@
         </div>
         <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
            <p>Поля, отмеченные звездочкой (*), обязательны для заполнения.</p>
-           <p>Правила пользования услугами можно прочитатть <a href="">здесь</a>.</p>
+           <p>Правила пользования услугами можно прочитать <a href="{{URL::to('')}}/page/rules">здесь</a>.</p>
         </div>
     </div>
 </div>

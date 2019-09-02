@@ -79,7 +79,7 @@
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>	
-<script src="http://dagestan.com.yy/adminlte/jquery/dist/jquery.min.js"></script>
+<script src="{{URL::to('/')}}/adminlte/jquery/dist/jquery.min.js"></script>
  
 <div id="mapid" style="width: 100%; height: 400px; "></div>
 <script>
