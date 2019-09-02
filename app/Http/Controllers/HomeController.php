@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use Hash;
 use App\Towns;
+use App\Ads;
 
 class HomeController extends Controller
 {
@@ -37,7 +38,8 @@ class HomeController extends Controller
     {
         // TODO: where moderation 0 or 1, 2 - deleted
         $towns = $this->get_towns();
-        return view('front.home',compact('towns'));
+        $ads = Ads::where('user_id', Auth::user()->id)->orderBy('id','desc')->get();
+        return view('front.home',compact('towns','ads'));
     }
     
     public function edit()

@@ -20,6 +20,11 @@ use App\Towns;
 class MapController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function map_config_page()
 	{
 

@@ -17,21 +17,31 @@
     <tbody>
         <tr>
 <th>ID:</th>
+<th>Мод.:</th>
 <th>Город:</th>
 <th>Тип:</th>
 <th>Добавил:</th>
 <th>Заголовок:</th>
 <th>Дата:</th>
+<th>Категория:</th>
 <th>Редактировать:</th>
         </tr>
     @forelse ($items as $item)
         <tr>
 <td>{{$item->id}}</td>
+<td>@if($item->moderation == 0) <a href="{{URL::to('/')}}/cp/edit_ads/{{$item->id}}" class=""><i class="fa fa-hourglass-half"></i></a> @endif </td>
 <td>{{$item->town->town}}</td>
 <td>@if($item->type == 1) Организация @elseif($item->type == 2) Специалист @endif </td>
 <td>{{$item->user->name}}</td>
-<td>{{$item->title}}</td>
-<td>{{$item->date}}</td>
+<td><a href="{{URL::to('/')}}/ad/{{$item->id}}" target="_blank">{{$item->title}}</a></td>
+<td>{{$item->date}} </td>
+<td>
+@forelse($item->categories as $category)
+{{$category->name}}
+@empty
+@endforelse
+
+</td>
 <td><a href="{{URL::to('/')}}/cp/edit_ads/{{$item->id}}" class="btn btn-primary btn-sm">Редактировать</a></td>
 
         </tr>

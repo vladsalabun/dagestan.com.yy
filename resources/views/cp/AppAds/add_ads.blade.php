@@ -7,7 +7,7 @@
 @section('content')
 <ol class="breadcrumb">
     <li><a href="{{URL::to('/')}}/cp"><i class="fa fa-dashboard"></i> Главная</a></li>
-    <li><a href="{{URL::to('/')}}/cp/pages">Все страницы</a></li>
+    <li><a href="{{URL::to('/')}}/cp/ads">Все объявления</a></li>
     <li class="active">Добавить объявление:</li>
 </ol>
 
@@ -49,7 +49,7 @@
     <th style="width: 250px">
 <div class="form-group">
 <p><b>Статус:</b></p>
-  <select class="form-control" name="modeartion">
+  <select class="form-control" name="moderation">
     <option value="1">Опубликовано</option>
     <option value="0">На модерации</option>
   </select>
@@ -135,6 +135,9 @@ $('body').on('click', '.company_link', function() {
          
     </td>
     <td>
+    
+        <input type="file" name="img" id="exampleInputFile">
+    <p class="help-block">Формат .jpg или .png</p>
 <div class="form-group">
 <p><b>Тип объявления:</b></p>
   <select class="form-control" name="type">
@@ -146,7 +149,7 @@ $('body').on('click', '.company_link', function() {
 
 <div class="form-group">
 <p><b>Город:</b></p>
-  <select class="form-control" name="type">
+  <select class="form-control" name="town_id">
 @forelse($towns as $town)
 <option value="{{$town->id}}">{{$town->town}}</option>
 @empty
@@ -231,6 +234,41 @@ $('body').on('click', '.company_link', function() {
       <i class="fa fa-clock-o"></i>
     </div>
 </div> 
+
+
+<br>
+<h3 class="box-title">Категории:</h3>
+<br>
+
+@forelse($categories as $category_name => $sub_categories)
+    @if (count($sub_categories) > 0) 
+    
+<div class="box box-warning">
+    <div class="box-header with-border">
+      <h3 class="box-title">{{$category_name}}</h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        @forelse($sub_categories as $category_id => $sub_category_name)
+<div class="">
+  <div class="radio">
+    <label>
+      <input type="radio" name="category" id="optionsRadios{{$category_id}}" value="{{$category_id}}">
+      {{$sub_category_name}}
+    </label>
+  </div>
+</div>
+        @empty
+        @endforelse
+    @else
+        
+    @endif
+    </div>
+    <!-- /.box-body -->
+</div>
+    
+@empty
+@endforelse
 
 
     </td>

@@ -9,6 +9,11 @@ use Storage;
 
 class AdminMainController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
 	{
         return view('cp.index');

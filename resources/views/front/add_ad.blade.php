@@ -27,7 +27,7 @@
 <!-- ФОРМА ДОБАВЛЕНИЯ ОРГАНИЗАЦИИ: --->
 <div class="tab-pane fade show active mt-5" id="organization" role="tabpanel" aria-labelledby="organization-tab">
 
-    <form method="post" action="{{URL::to('/')}}/post_add_ad" autocomplete="off" id="">
+    <form method="post" action="{{URL::to('/')}}/post_add_ad" autocomplete="off" id="" enctype="multipart/form-data">
         {{ csrf_field() }}
         <input type="hidden" name="type" value="1">
 
@@ -36,7 +36,7 @@
     <input type="text" name="title" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Название организации *" required>
 </div>
 <div class="form-group mb-3 form-town-block">
-    <select class="form-control agagro-form-style towns-selection pt-2 pb-2 pl-3 pr-1" name="town" required></select>
+    <select class="form-control agagro-form-style towns-selection pt-2 pb-2 pl-3 pr-1" name="town_id" required></select>
 </div>
 <div class="form-group mb-3">
     <input type="text" name="address" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Адрес *" required>
@@ -97,7 +97,7 @@
 <div class="form-group mb-3">
     <label for="exampleFormControlFile1">Фотография:</label>
     <div class="agagro-form-style pt-2 pb-2 pl-3 pr-3">
-        <input type="file" name="img" class="form-control-file" id="exampleFormControlFile1" placeholder="11">
+        <input type="file" name="img" class="form-control-file" id="exampleFormControlFile1">
     </div>
 </div>
 
@@ -164,7 +164,7 @@
 
 
 <div class="form-group mb-3 form-town-block">
-    <select class="form-control agagro-form-style towns-selection pt-2 pb-2 pl-3 pr-1" name="town" required></select>
+    <select class="form-control agagro-form-style towns-selection pt-2 pb-2 pl-3 pr-1" name="town_id" required></select>
 </div>
 <div class="form-group mb-3">
     <input type="text" name="address" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Адрес *" required>
@@ -232,7 +232,7 @@
 <div class="form-group mb-3">
     <label for="exampleFormControlFile1">Фотография:</label>
     <div class="agagro-form-style pt-2 pb-2 pl-3 pr-3">
-        <input type="file" name="img" class="form-control-file" id="exampleFormControlFile1" placeholder="11">
+        <input type="file" name="img" class="form-control-file" id="exampleFormControlFile1">
     </div>
 </div>
 

@@ -20,6 +20,11 @@ use App\Banners;
 class BannersController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
    public function banners()
    {
        $items = Banners::orderBy('id', 'desc')->paginate(10);

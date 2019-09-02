@@ -20,6 +20,11 @@ use App\Towns;
 class TownsController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
    public function towns()
    {
        $towns = Towns::orderBy('town', 'asc')->paginate(10);

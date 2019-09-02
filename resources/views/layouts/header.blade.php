@@ -50,7 +50,9 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     
-                                    
+                                    @if(Auth::user()->role_id == 1) 
+                                        <a class="dropdown-item" href="{{ URL::to('/') }}/cp"><i class="fa fa-cog" aria-hidden="true"></i> Панель управления</a>
+                                    @endif
                                     <a class="dropdown-item" href="{{ URL::to('/') }}/home"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Личный кабинет</a>
                                     
                                     <a class="dropdown-item" href="{{ route('logout') }}"
