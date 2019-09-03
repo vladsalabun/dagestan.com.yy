@@ -76,7 +76,11 @@ class FrontController extends Controller
     public function ad_page($id)
 	{
         $stars = UserStars::where('ad_id',$id)->get()->count();
-        $current_user_star = UserStars::where('ad_id',$id)->where('user_id', Auth::user()->id)->first();
+        if (Auth::check()) {
+            $current_user_star = UserStars::where('ad_id',$id)->where('user_id', Auth::user()->id)->first();
+        } else {
+            $current_user_star = 0;
+        }
         
         $towns = $this->get_towns();
         $ad = Ads::where('id',$id)->first();

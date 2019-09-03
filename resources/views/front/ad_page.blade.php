@@ -269,6 +269,8 @@ $('body').on('click', '.hidden_num', function() {
     });
      
 </script>
+
+@if (Auth::check())
 <div class="container pb-5 pt-2">
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 ">
@@ -277,6 +279,10 @@ $('body').on('click', '.hidden_num', function() {
         </div>
     </div>
 </div>
+@else
+  
+@endif
+
 <script>
 $(document).ready(function(){
 
