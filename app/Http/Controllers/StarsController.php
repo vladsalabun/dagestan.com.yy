@@ -54,7 +54,11 @@ class StarsController extends Controller
                 $sum += $value->stars;
             }
             
-            $array['average_stars'] = round($sum / count($allStars), 2 );
+            if(count($allStars) == 1) {
+                $array['average_stars'] = $allStars[0]->stars;
+            } else {
+                $array['average_stars'] = round($sum / count($allStars), 2 );
+            }
             $array['new_stars'] = $request->stars;
             
             $obj->stars = $array['average_stars'];
