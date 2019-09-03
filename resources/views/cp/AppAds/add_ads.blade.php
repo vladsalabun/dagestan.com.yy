@@ -70,7 +70,6 @@
         <p><input type="text" class="form-control" value="" name="surname" placeholder="Фамилия"></p>
         <p><input type="text" class="form-control" value="" name="working_hours" placeholder="Время работы"></p>
         <p><input type="text" class="form-control" value="" name="work_expiriens" placeholder="Опыт работы"></p>
-        <p><input type="text" class="form-control" value="" name="average_price" placeholder="Средняя цена за услуги"></p>
 <br>
 <style>
 .company_link { color: #69BEFD; text-decoration: underline; }
@@ -160,7 +159,7 @@ $('body').on('click', '.company_link', function() {
 
 <div class="input-group">
     <span class="input-group-addon"><i class="fa fa-money"></i></span>
-    <input type="text" class="form-control input-sm" value="" name="price" placeholder="цена">
+    <input type="text" class="form-control input-sm" value="" name="average_price" placeholder="цена">
 </div>
 <br>
 <div class="input-group">

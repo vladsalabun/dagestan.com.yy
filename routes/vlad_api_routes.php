@@ -157,6 +157,7 @@ Route::get('/get_banners', function (Request $request) {
     
 });
 
+
 /**
  *      get_all_ads_markers:
  */
@@ -195,7 +196,6 @@ Route::get('/get_all_ads_markers', function (Request $request) {
 });
 
 
-
 /**
  *      Показать еще рекомендации:
  */
@@ -226,7 +226,7 @@ Route::get('/get_recommendations', function (Request $request) {
             foreach ($ads as $key => $value) {
                 
                 if ($value->img == null) {
-                    $img_src = URL::to('/') . '/img/no-image-icon.png';
+                    $img_src = URL::to('/') . '/img/no-image.png';
                 } else {
                     $img_src = URL::to('/') . '/storage/' . $value->img;
                 }
@@ -234,7 +234,7 @@ Route::get('/get_recommendations', function (Request $request) {
                 $array['items'][$key] = array(
                     'id' => $value->id,
                     'title' => $value->title,
-                    'description' => $value->description,
+                    'description' => Str::limit($value->description),
                     'img' => $img_src,
                     'address' => $value->address,
                     'stars' => $value->stars,
@@ -251,3 +251,4 @@ Route::get('/get_recommendations', function (Request $request) {
     return response()->json($array);
     
 });
+

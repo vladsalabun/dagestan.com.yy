@@ -11,7 +11,7 @@
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>	
-<script src="{{URL::to('/')}}/adminlte/jquery/dist/jquery.min.js"></script>
+
 
 <!-- Добавление объявления: --->
 <div class="container mt-2">
@@ -177,7 +177,7 @@ mymap1.on('click', onMapClick1);
   
   
 <!-- ФОРМА ДОБАВЛЕНИЯ СПЕЦИАЛИСТА: --->
-<div class="tab-pane fade show active mt-5" id="specialist" role="tabpanel" aria-labelledby="specialist-tab">
+<div class="tab-pane fade mt-5" id="specialist" role="tabpanel" aria-labelledby="specialist-tab">
 
     <form method="post" action="{{URL::to('/')}}/post_add_ad" autocomplete="off" id="">
         {{ csrf_field() }}
@@ -318,6 +318,12 @@ function onMapClick2(e) {
 
 mymap2.on('click', onMapClick2);
      
+     
+
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    mymap2.invalidateSize();
+})
+
 </script>
 
 <div class="form-check mt-3 mb-3 oferta-block">

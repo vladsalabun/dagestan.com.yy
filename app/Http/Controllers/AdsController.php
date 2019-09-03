@@ -343,4 +343,13 @@ class AdsController extends Controller
 
    }
 
+   public function estimate()
+   {
+
+        $array['status'] = 200;
+        $array['user_id'] = Auth::user()->name;
+
+        return response()->json($array);
+
+   }
 }

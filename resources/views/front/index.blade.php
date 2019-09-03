@@ -78,9 +78,9 @@
         <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6"><h3>Рекомендации для вас:</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 text-right">
-            <a href=""><span class="btn btn-primary recommendations-buttons">Все</span></a>
-            <a href="?filter=organizations"><span class="btn btn-light recommendations-buttons text-secondary">Организации</span></a>
-            <a href="?filter=specialists"><span class="btn btn-light recommendations-buttons text-secondary">Специалисты</span></a>
+            <a href="{{URL::to('/')}}"><span class="btn btn-primary recommendations-buttons">Все</span></a>
+            <a href="{{URL::to('/')}}?filter=organizations"><span class="btn btn-light recommendations-buttons text-secondary">Организации</span></a>
+            <a href="{{URL::to('/')}}?filter=specialists"><span class="btn btn-light recommendations-buttons text-secondary">Специалисты</span></a>
         </div>
     </div>
     
@@ -101,7 +101,7 @@
                     <i class="fa fa-map-marker" aria-hidden="true"></i>{{$ad->address}}
                 </div>
                 <div class="recommendation-on-img-right">
-                    4.7 <i class="fa fa-star-o" aria-hidden="true"></i>
+                {{$ad->stars}} <i class="fa fa-star-o" aria-hidden="true"></i>
                 </div>
             </div>
         </div>
@@ -142,13 +142,22 @@ $('body').on('click', '.get_more', function() {
     .done (function (data) {
         //console.log('form was submitted');
         if(data.status == 200) {
-            $('#recommendation').append('recommendation');
+            
+           $.each(data.items, function(index, value) {
+
+                $('#recommendation').append('<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 pb-5"><div class="recommendation-img-wrap bg-light ad-map" style="height:250px;"><img class="img-fluid mx-auto d-block" src="' + value.img + '" style="max-height:250px"><div class="recommendation-on-img"><div class="recommendation-on-img-left"><i class="fa fa-map-marker" aria-hidden="true"></i>' + value.address + '</div><div class="recommendation-on-img-right">' + value.stars + ' <i class="fa fa-star-o" aria-hidden="true"></i></div></div></div><div class="p-1"><p class="pt-3 pb-1 recommendation-link"><a href="{{URL::to('/')}}/ad/' + value.id + '">' + value.title + '</a></p>' + value.description + '</div></div>');
+               
+           }); 
+            
+           
+            
+            
             
             // Следующая страница
             next_page = parseInt(next_page) + 1;
             $('.get_more').attr('next_page', next_page);
             console.log('next_page: ' + next_page);
-            console.log(data.items);
+            
         } else {
             $('.get_more').remove();
         }

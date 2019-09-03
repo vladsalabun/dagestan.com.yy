@@ -3,6 +3,13 @@
 @section('page_header')Объявления Дагестана@endsection
 
 @section('content')
+<style>
+.company_link { color: #69BEFD; text-decoration: underline; }
+.company_link:hover { cursor: pointer;}
+.company_logo { width: 30px; float: left; margin-right: 3px;}   
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>	
 
 
 <div class="container mt-5 mb-5 pb-3">
@@ -15,13 +22,13 @@
             <span class="btn btn-light recommendations-buttons text-secondary mb-1">Цена, от</span>
             <span class="btn btn-light recommendations-buttons text-secondary mb-1">Цена, до </span>
             <span class="btn btn-light recommendations-buttons text-secondary mb-1">Сортировать по <i class="fa fa-sort" aria-hidden="true"></i></span>
-            <span class="btn btn-light recommendations-buttons text-secondary mb-1" data-toggle="collapse" href="#MapCollapse" role="button" aria-expanded="false" aria-controls="MapCollapse"><i class="fa fa-map" aria-hidden="true"></i> Показать на карте</span>
+            <a class="btn btn-light recommendations-buttons text-secondary mb-1" data-toggle="collapse" href="#MapCollapse" role="button" aria-expanded="false" aria-controls="MapCollapse">
+            <i class="fa fa-map" aria-hidden="true"></i> Показать на карте
+            </a>
+            
         </div>
     </div>
 </div>
-
-
-
 
 
 <div class="container mb-5 pb-5">
@@ -73,7 +80,54 @@
   <div class="col">
     <div class="collapse multi-collapse" id="MapCollapse">
       <div class="card card-body bg-light text-center ad-map" id="companies_map">
-        TODO: Тут будет карта компаний
+                <div id="mapid" style="width: 100%; height: 400px; "></div>
+<script>
+
+	var mymap = L.map('mapid').setView([{{$max_center[0]}}, {{$max_center[1]}}], {{$initZoom}});
+
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={{$openstreetmap_api_key}}', {
+		maxZoom: {{$maxZoom}},
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox.streets'
+	}).addTo(mymap);
+
+    // Відправляю дані:
+    $.ajax({ type: 'get', url: '{{URL::to("/")}}/api/get_all_ads_markers', })
+    .done (function (data) {
+
+        if(data['status'] == '200') {
+            $.each(data['items'], function(index, value) {
+                    
+                 if(value['latitude'] != null && value['longitude'])    {
+                     //console.log(value['latitude'] +' - '+ value['longitude']);
+                     console.log(value['latitude']);
+                     L.marker(
+                        [value['longitude'], value['latitude']]
+                     ).addTo(mymap).bindPopup('<a href="{{URL::to('/')}}/cp/edit_ads/' + value['id'] + '">#' + value['id'] + '</a> '+ value['title']);
+                 }
+                 
+            });
+        }
+ 
+    });
+    
+    
+    
+/*
+    function show_id(company_id) {
+        location.href= '{{URL::to("/")}}/edit_nearest_company/' + company_id;
+    }   
+*/
+ 
+
+$('#MapCollapse').on('shown.bs.collapse', function () {
+    // do something…
+    mymap.invalidateSize();
+})
+</script>
+
       </div>
     </div>
   </div>
@@ -104,7 +158,7 @@
                     </div>
                     <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 mb-3">
                         <div class="ad-address-block ad-address text-center text-primary">
-                            4.7 <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <span id="stars_1">4.7</span> <i class="fa fa-star-o" aria-hidden="true"></i>
                         </div>
                     </div>
                 </div>
@@ -138,9 +192,6 @@
 
 
 <script>
-
-
-
 $('body').on('click', '.root_menu_a', function() {
     var plus_id = $(this).attr('plus_id');
 
@@ -156,8 +207,6 @@ $('body').on('click', '.root_menu_a', function() {
     })
     
 });
-
-
 </script>
 
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('page_header')Объявление 1 @endsection
+@section('page_header')Объявление: {{$ad->title}} @endsection
 
 @section('content')
 <style>
@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>	
 <script src="http://dagestan.com.yy/adminlte/jquery/dist/jquery.min.js"></script>
+<script src="{{ asset('js/rater.js') }}"></script>
 
 
 <!-- Объявление: --->
@@ -18,10 +19,31 @@
     <div class="row pt-5">
         <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
             <h3>{{$ad->title}}</h3>
-            <p class="text-secondary"><a href="{{URL::to('/')}}">Agargo</a> / <a href="">Салоны</a> / <a href="">Красота</a><p>
+            <p class="text-secondary">
+                <a href="{{URL::to('/')}}">Главная</a> / 
+                @if ($ad->type == 1)
+                    <a href="{{URL::to('/')}}/company?type=1">Организации</a> / 
+                @else
+                    <a href="{{URL::to('/')}}/company?type=2">Специслисты</a> / 
+                @endif
+                @if(count($ad->categories) > 0)
+                    
+                    @forelse ($ad->categories as $category)
+                        <a href="{{URL::to('/')}}/category?id={{$category->id}}">{{$category->name}}</a>
+                    @empty
+                    @endforelse
+                @endif
+                
+                
+            <p>
         </div>
             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 text-right ">
-            <span class="p-2 bg-light">Поделиться: [TODO: кнопочки соц.сетей]</span>
+            <span class="p-2">
+            <!-- uSocial -->
+                <script async src="https://usocial.pro/usocial/usocial.js?v=6.1.4" data-script="usocial" charset="utf-8"></script>
+                <div class="uSocial-Share" data-pid="e98d3bb3a1c420f8b1b2d58d6e4163a6" data-type="share" data-options="rect,style1,default,absolute,horizontal,size24,eachCounter0,counter1,counter-after" data-social="vk,fb,ok,telegram,email,bookmarks" data-mobile="vi,wa,sms"></div>
+            <!-- /uSocial -->
+            </span>
         </div>
     </div>
 </div>
@@ -30,14 +52,14 @@
 
 <div class="container mt-3">
     <div class="row">
-        <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 pb-2">
+        <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 ad-map mb-2 bg-light">
             @if ($ad->img != null)
                 <img class="img-fluid mx-auto d-block" src="{{URL::to('/')}}/storage/{{$ad->img}}">
             @else
                 <img class="img-fluid mx-auto d-block" src="{{URL::to('/')}}/img/no-image.png">
             @endif
         </div>
-        <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 ad-map pb-2">
+        <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 ad-map mb-2">
             <div id="mapid" style="width: 100%; height: 400px; "></div>
         </div>
     </div>
@@ -55,7 +77,12 @@
       shadowSize: [41, 41]
     });
 
-	var mymap = L.map('mapid').setView([{{$max_center[0]}}, {{$max_center[1]}}], {{$initZoom}});
+<?php if ($ad->longitude != null and $ad->latitude != null) { ?>
+    
+    var mymap = L.map('mapid').setView([{{$ad->longitude}}, {{$ad->latitude}}], {{$initZoom}});
+<?php } else { ?>
+    var mymap = L.map('mapid').setView([{{$max_center[0]}}, {{$max_center[1]}}], {{$initZoom}});
+<?php } ?>
 
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={{$openstreetmap_api_key}}', {
 		maxZoom: {{$maxZoom}},
@@ -70,11 +97,11 @@
 <?php if ($ad->longitude != null and $ad->latitude != null) { ?>
     L.marker([{{$ad->longitude}},{{$ad->latitude}}], {icon: greenIcon}).addTo(markerGroup);
 <?php } ?>
+
     
    
      
 </script>
-
 
 
 
@@ -103,14 +130,17 @@
         <div class="col-sm-6 col-md-2 col-lg-2 col-xl-2 ad-stars-block text-center">
             <div class="ad-stars">
             <span>
-                {{$ad->stars}} <i class="fa fa-star-o" aria-hidden="true"></i>
+                <span id="average_stars">{{$ad->stars}}</span> <i class="fa fa-star-o" aria-hidden="true"></i>
             </span>
             </div>
         </div>
         <div class="col-sm-6 col-md-2 col-lg-3 col-xl-3 ad-stars-count-block text-center">
             <div class="ad-stars-count text-muted">
             <span>
-                46 Оценок
+            @if ($stars == 1) {{$stars}} оценка
+            @elseif ($stars > 1 and $stars < 5) {{$stars}} оценки
+            @else {{$stars}} оценок
+            @endif
             </span>
             </div>
         </div>
@@ -123,28 +153,87 @@
 <div class="container mt-3">
     <div class="row pt-4 pb-3">
         <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 pb-3">
+            
+            @if($ad->name != null and $ad->surname != null)
             <div class="border-bottom pb-3 pt-3 d-flex justify-content-between">
-                <span>Категория:</span><span class="ad_extend">Салоны, Красота</span>
+                <span>Специалист:</span><span class="ad_extend"><span>{{$ad->name}} {{$ad->surname}}</span>
             </div>
+            @endif
+            
+            @if($ad->work_expiriens != null)
+            <div class="border-bottom pb-3 pt-3 d-flex justify-content-between">
+                <span>Опыт:</span><span class="ad_extend"><span>{{$ad->work_expiriens}} </span>
+            </div>
+            @endif
+            
+            <div class="border-bottom pb-3 pt-3 d-flex justify-content-between">
+                @if(count($ad->categories) > 0)
+                    <span>Категория:</span><span class="ad_extend">
+                    @forelse ($ad->categories as $category)
+                        <a href="{{URL::to('/')}}/category?id={{$category->id}}">{{$category->name}}</a>
+                    @empty
+                    @endforelse
+                @endif
+                </span>
+            </div>
+            
+            @if($ad->working_hours != null)
             <div class="border-bottom pb-3 pt-3 d-flex justify-content-between">
                 <span>Время работы:</span><span class="ad_extend">{{$ad->working_hours}}</span>
             </div>
+            @endif
+            
+            @if($ad->site != null)
             <div class="border-bottom pb-3 pt-3 d-flex justify-content-between">
                 <span>Сайт:</span><span class="ad_extend">{{$ad->site}}</span>
             </div>
+            @endif
+            
+            @if($ad->email != null)
             <div class="border-bottom pb-3 pt-3 d-flex justify-content-between">
                 <span>E-mail:</span><span class="ad_extend">{{$ad->email}}</span>
             </div>
+            @endif
+                        
             <div class="border-bottom pb-3 pt-3 d-flex justify-content-between">
                 <span>Номер телефона:</span>
                 <span class="ad_extend">
                     <span class="hidden_num"><a href="#">Показать</a></span>                
                 </span>
-                
-
-                
-                </span>
+            </div>  
+            
+            @if($ad->average_price != null)
+            <div class="border-bottom pb-3 pt-3 d-flex justify-content-between">
+                <span>Средняя цена:</span><span class="ad_extend">{{$ad->average_price}}</span>
             </div>
+            @endif
+            
+            @if($ad->vk != null)
+            <div class="border-bottom pb-3 pt-3 d-flex justify-content-between">
+                <span><i class="fa fa-vk" aria-hidden="true"></i></span><span class="ad_extend">{{$ad->vk}}</span>
+            </div>
+            @endif
+              
+            @if($ad->fb != null)
+            <div class="border-bottom pb-3 pt-3 d-flex justify-content-between">
+                <span><i class="fa fa-facebook" aria-hidden="true"></i></span><span class="ad_extend">{{$ad->fb}}</span>
+            </div>
+            @endif
+
+            @if($ad->ok != null)
+            <div class="border-bottom pb-3 pt-3 d-flex justify-content-between">
+                <span><i class="fa fa-odnoklassniki-square" aria-hidden="true"></i></span><span class="ad_extend">{{$ad->ok}}</span>
+            </div>
+            @endif  
+
+            @if($ad->instagram != null)
+            <div class="border-bottom pb-3 pt-3 d-flex justify-content-between">
+                <span><i class="fa fa-instagram" aria-hidden="true"></i></span>
+                <span class="ad_extend">{{$ad->instagram}}</span>
+            </div>
+            @endif  
+       
+       
         </div>
         <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 pb-3">
             <div class="bg-light p-3 rounded">
@@ -165,22 +254,69 @@ $('body').on('click', '.hidden_num', function() {
 
 </script>
 
+<script>
+    $(document).ready(function(){
 
+        var options = {
+            max_value: 5,
+            step_size: 0.5,
+        }
+        $(".rating").rate(options);
+        
+        $(".rating").rate("getValue");
+        $(".rating").rate("setValue", 2.5);
+        
+    });
+     
+</script>
 <div class="container pb-5 pt-2">
     <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <span class="give-star">Оставить оценку:</spam> 
-            <span class="ml-2 pl-4 pr-4 pt-1 pb-1 bg-light text-warning ad-stars-rounding">
-            <i class="fa fa-star" aria-hidden="true"></i>
-            <i class="fa fa-star" aria-hidden="true"></i>
-            <i class="fa fa-star" aria-hidden="true"></i>
-            <i class="fa fa-star-half-o" aria-hidden="true"></i>
-            <i class="fa fa-star-o" aria-hidden="true"></i>
-            </span> 
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 ">
+            <span class="give-star">Оставить оценку:</span> 
+            <div class="rating ml-2 pl-4 pr-4 pt-1 pb-1 text-warning ad-stars-rounding" data-rate-value="1"></div>
         </div>
     </div>
 </div>
+<script>
+$(document).ready(function(){
 
+        var options = {
+            max_value: 5,
+            step_size: 0.5,
+        }
+        $(".rating").rate(options);
+        
+        $(".rating").rate("getValue");
+        @if ($current_user_star != null)
+            $(".rating").rate("setValue", {{$current_user_star->stars}});
+        @else
+            $(".rating").rate("setValue", 0);
+        @endif
+    
+        $(".rating").on("change", function(ev, data) {
+            //console.log(data.from, data.to);
+            // Відправляю дані:
+            $.ajax({
+                type: 'get',
+                url: '{{URL::to('/')}}/estimate?ad={{$ad->id}}&stars=' + data.to,
+                data: $('#form_id').serialize(),
+            })
+            .done (function (response) {
+               // $(".rating").rate("setValue", data.to);
+                //console.log(response);
+                $('#average_stars').text(''); // Видаляю вміст блока
+                $('#average_stars').append(response.average_stars); // Дописую вміст блока з HTML
+            })
+            .fail (function () {
+                //console.log('form error');
+            });
+        });
+
+    });
+
+
+
+</script>
 <!-- /Объявление --->
 
 

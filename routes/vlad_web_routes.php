@@ -11,7 +11,7 @@ Route::get('/404', 'FrontController@error404');
 
 // Объявления:
 Route::get('/ad/{id}', 'FrontController@ad_page');
-
+Route::get('/estimate', 'StarsController@estimate');
 Route::get('/company', 'FrontController@company_page');
 Route::get('/page/{slug}', 'FrontController@page_page');
 Route::get('/town/{id}', 'FrontController@chacheTown');

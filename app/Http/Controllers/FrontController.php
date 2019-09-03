@@ -13,6 +13,7 @@ use App\AdsCategories;
 use App\Banners;
 use App\Towns;
 use App\Users;
+use App\UserStars;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Input;
 
@@ -74,6 +75,9 @@ class FrontController extends Controller
     // Страница объявления:
     public function ad_page($id)
 	{
+        $stars = UserStars::where('ad_id',$id)->get()->count();
+        $current_user_star = UserStars::where('ad_id',$id)->where('user_id', Auth::user()->id)->first();
+        
         $towns = $this->get_towns();
         $ad = Ads::where('id',$id)->first();
         if($ad == null) {
@@ -119,12 +123,14 @@ class FrontController extends Controller
         }
         
         $maxZoom = 18;
-        $initZoom = 13;
+        $initZoom = 10;
         
         $max_center = array($longitude, $latitude);
         
+        // TODO: хлібні крихти
+        //dd($ad->categories);
         
-        return view('front.ad_page', compact('id', 'towns','ad', 'google_map_key', 'latitude', 'longitude', 'openstreetmap_api_key','maxZoom','initZoom','max_center'));
+        return view('front.ad_page', compact('id', 'towns','ad', 'google_map_key', 'latitude', 'longitude', 'openstreetmap_api_key','maxZoom','initZoom','max_center','stars','current_user_star'));
     }
     
     // Список специалистов:
@@ -132,8 +138,52 @@ class FrontController extends Controller
 	{
         $towns = $this->get_towns();
         
+        $google_map_key = OptionsController::get_option('google_map_key'); 
+
+        if(count($google_map_key) == 0) {
+            OptionsController::set_option('google_map_key', null);
+            $google_map_key = null;
+        } else {
+            $google_map_key = $google_map_key[0]->option_value;
+        }
+        
+        $openstreetmap_api_key = OptionsController::get_option('openstreetmap_api_key'); 
+
+        if(count($openstreetmap_api_key) == 0) {
+            OptionsController::set_option('openstreetmap_api_key', null);
+            $openstreetmap_api_key = null;
+        } else {
+            $openstreetmap_api_key = $openstreetmap_api_key[0]->option_value;
+        }
+        
+        // longitude
+        $longitude = OptionsController::get_option('longitude'); 
+
+        if(count($longitude) == 0) {
+            OptionsController::set_option('longitude', null);
+            $longitude = null;
+        } else {
+            $longitude = $longitude[0]->option_value;
+        }
+        
+        // latitude
+        $latitude = OptionsController::get_option('latitude'); 
+
+        if(count($latitude) == 0) {
+            OptionsController::set_option('latitude', null);
+            $latitude = null;
+        } else {
+            $latitude = $latitude[0]->option_value;
+        }
+        
+        $maxZoom = 18;
+        $initZoom = 7;
+        
+        $max_center = array($longitude, $latitude);
+        
+        
         $categories_tree = (new AdsCategories)->get_tree();
-        return view('front.company_page', compact('categories_tree', 'towns'));
+        return view('front.company_page', compact('categories_tree', 'towns', 'ad', 'google_map_key', 'latitude', 'longitude', 'openstreetmap_api_key','maxZoom','initZoom','max_center'));
     }
     
     // Страница добавления объявления:

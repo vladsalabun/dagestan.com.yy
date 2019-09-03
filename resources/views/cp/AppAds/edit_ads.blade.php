@@ -68,7 +68,6 @@
         <p><input type="text" class="form-control" value="{{$item->surname}}" name="surname" placeholder="Фамилия"></p>
         <p><input type="text" class="form-control" value="{{$item->working_hours}}" name="working_hours" placeholder="Время работы"></p>
         <p><input type="text" class="form-control" value="{{$item->work_expiriens}}" name="work_expiriens" placeholder="Опыт работы"></p>
-        <p><input type="text" class="form-control" value="{{$item->average_price}}" name="average_price" placeholder="Средняя цена за услуги"></p>
 <br>
 <style>
 .company_link { color: #69BEFD; text-decoration: underline; }
@@ -186,7 +185,7 @@ mymap.on('click', onMapClick);
 
 <div class="input-group">
     <span class="input-group-addon"><i class="fa fa-money"></i></span>
-    <input type="text" class="form-control input-sm" value="{{$item->price}}" name="price" placeholder="цена">
+    <input type="text" class="form-control input-sm" value="{{$item->average_price}}" name="average_price" placeholder="цена">
 </div>
 <br>
 <div class="input-group">

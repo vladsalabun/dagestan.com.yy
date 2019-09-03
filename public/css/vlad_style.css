@@ -9,6 +9,13 @@ h1,h2 {
 }
 
 
+.flex-fill {
+    flex: 1 1 auto;
+} 
+
+
+
+
 .vcenter {
     display: inline-block;
     vertical-align: middle;
@@ -141,9 +148,11 @@ h1,h2 {
 .give-star {
     font-size: 20px;
     color: #4485bd;
+    
 }
 .ad-stars-rounding {
     border-radius: 50px;
+    font-size: 35px;
 }
 
 /* Компании */
