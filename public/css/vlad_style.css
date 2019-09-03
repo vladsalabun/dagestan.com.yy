@@ -1,6 +1,13 @@
 h1,h2 {
     font-family: Roboto;
 }
+.no-underline {
+    text-decoration: none;
+}
+.no-underline:hover {
+    text-decoration: none;
+}
+
 
 .vcenter {
     display: inline-block;

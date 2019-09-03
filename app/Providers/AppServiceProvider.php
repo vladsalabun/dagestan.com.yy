@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Crypt;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,7 +26,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        
         //
         Schema::defaultStringLength(191);
+        
+        //
+        $favourite_town = Cookie::get('favourite_town');
+        if($favourite_town == null) {
+            $favourite_town = 1;
+        }
+        view()->share('favourite_town', $favourite_town);
+        
     }
 }

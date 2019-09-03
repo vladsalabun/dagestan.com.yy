@@ -72,42 +72,31 @@
 	}).addTo(mymap);
 
     // Відправляю дані:
-    $.ajax({ type: 'get', url: '{{URL::to("/")}}/api/get_companies_markers', })
+    $.ajax({ type: 'get', url: '{{URL::to("/")}}/api/get_all_ads_markers', })
     .done (function (data) {
-        
-        var obj = JSON.parse(data); 
-        
-        $.each(obj, function(index, value) {
-                L.marker([value[0], value[1]]).addTo(mymap).bindPopup(value[2]);
-                
-                // $('#items').append('<p><b>Компания №' + index + '</b> [' + value[0] + ', ' + value[1] + ']</p><p>'+value[2]+'</p>'); 
-                
-        });
-        
+
+        if(data['status'] == '200') {
+            $.each(data['items'], function(index, value) {
+                    
+                 if(value['latitude'] != null && value['longitude'])    {
+                     //console.log(value['latitude'] +' - '+ value['longitude']);
+                     console.log(value['latitude']);
+                     L.marker(
+                        [value['longitude'], value['latitude']]
+                     ).addTo(mymap).bindPopup('<a href="{{URL::to('/')}}/cp/edit_ads/' + value['id'] + '">#' + value['id'] + '</a> '+ value['title']);
+                 }
+                 
+            });
+        }
+ 
     });
 
     function show_id(company_id) {
         location.href= '{{URL::to("/")}}/edit_nearest_company/' + company_id;
     }   
 
-function onMapClick(e) {
-	$("#new_coordinates").text("");
-	$("#new_coordinates").append("Координаты: " + e.latlng);
-}
-
-mymap.on('click', onMapClick);
-    
-
-// Клік на об'єкт:
-$('body').on('click', '.company_link', function() {
-    location.href= '{{URL::to("/")}}/edit_nearest_company/' + $(this).attr('company_id');
-    return false;
-});
-    
 </script>
-    <div id="items" style="margin: 10px; ">
-    </div>
-          <div id="new_coordinates"></div>  
+
         </div>
         <!--/.col (right) -->
       </div>

@@ -84,5 +84,6 @@ class MapController extends Controller
         
         return redirect(URL::to('/').'/cp/map_config'); 
     }
+    
 
 }

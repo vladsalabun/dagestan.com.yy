@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\OptionsController;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Pages;
 use App\Banners;
-
-// TODO: get_companies_markers
+use App\Ads;
+use App\Towns;
 
 
 /**
@@ -130,6 +132,7 @@ Route::get('/get_banners', function (Request $request) {
 
     if ($items != null) {
         
+        $array['status'] = 200;
         $array['items'] = array();
         
         foreach ($items as $key => $value) {
@@ -150,6 +153,101 @@ Route::get('/get_banners', function (Request $request) {
         $array = array('status' => 404, 'error' => 'Нет баннеров.');
     }
     
+    return response()->json($array);
+    
+});
+
+/**
+ *      get_all_ads_markers:
+ */
+Route::get('/get_all_ads_markers', function (Request $request) {
+    
+    $items = Ads::all();
+ 
+    if ($items != null) {
+        
+        $array['status'] = 200;
+        $array['items'] = array();
+        
+        foreach ($items as $key => $value) {
+            
+            if ($value->img == null) {
+                $img_src = URL::to('/') . '/img/no-image-icon.png';
+            } else {
+                $img_src = URL::to('/') . '/storage/' . $value->img;
+            }
+            
+            $array['items'][$key] = array(
+                'id' => $value->id,
+                'title' => $value->title,
+                'img' => $img_src,
+                'latitude' => $value->latitude,
+                'longitude' => $value->longitude,
+            );
+        }
+        
+    } else {
+        $array = array('status' => 404, 'error' => 'Нет баннеров.');
+    }
+    
+    
+    return response()->json($array);
+});
+
+
+
+/**
+ *      Показать еще рекомендации:
+ */
+Route::get('/get_recommendations', function (Request $request) {
+
+    $type = Input::get('type');
+    $towns = Towns::all();
+    $favourite_town = Cookie::get('favourite_town');
+    
+    if($favourite_town == null) {
+        $favourite_town = $towns[0]->id;
+    }
+
+    $array = array(
+        'status' => 200,
+    );
+    
+    if($type > 0) {
+        $ads = Ads::where('town_id',$favourite_town)->where('type', $type)->where('moderation', 1)->orderBy('date','desc')->paginate(6);
+    } else {
+        $ads = Ads::where('town_id',$favourite_town)->where('moderation', 1)->orderBy('date','desc')->paginate(6);
+    }
+    
+    if ($ads != null) {
+        
+        if(count($ads) > 0) {
+        
+            foreach ($ads as $key => $value) {
+                
+                if ($value->img == null) {
+                    $img_src = URL::to('/') . '/img/no-image-icon.png';
+                } else {
+                    $img_src = URL::to('/') . '/storage/' . $value->img;
+                }
+                
+                $array['items'][$key] = array(
+                    'id' => $value->id,
+                    'title' => $value->title,
+                    'description' => $value->description,
+                    'img' => $img_src,
+                    'address' => $value->address,
+                    'stars' => $value->stars,
+                );
+            }
+        
+        } else {
+            $array = array('status' => 404, 'error' => 'Нет рекомендаций.');
+        }
+    } else {
+        $array = array('status' => 404, 'error' => 'Нет рекомендаций.');
+    }
+
     return response()->json($array);
     
 });

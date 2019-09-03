@@ -32,7 +32,17 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link" id="TownDropdown" data-toggle="collapse" href="#TownCollapse" role="button" aria-expanded="false" aria-controls="TownCollapse">
-                    <span class="">Ваш город:</span> <span class="text-primary"><span class="underline-dotted">Махачкала</span> <i class="fa fa-angle-down" aria-hidden="true"></i></span>
+                <span class="">Ваш город:</span> 
+
+@forelse ($towns as $town)
+    @if ($town->id == $favourite_town)
+        <span class="text-primary">
+            <span class="underline-dotted">{{$town->town}}</span> <i class="fa fa-angle-down" aria-hidden="true"></i>
+        </span>
+    @endif
+@empty
+@endforelse
+                    
                 </a>
                                
             </li>
@@ -78,16 +88,14 @@
 </nav>
 
 
-
 <!-- Города: --->
-
 <div class="container border-0">
     <div class="row">
         <div class="col">
             <div class="collapse multi-collapse" id="TownCollapse">
                 <div class="row">
 @forelse ($towns as $town)
-<div class="col-4 text-center">{{$town->town}}</div> 
+<div class="col-4 text-center"><a href="{{URL::to('/')}}/town/{{$town->id}}" class="underline-dotted no-underline">{{$town->town}}</a></div> 
 @empty
 @endforelse
                 </div>

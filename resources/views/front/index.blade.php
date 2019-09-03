@@ -78,13 +78,13 @@
         <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6"><h3>Рекомендации для вас:</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 text-right">
-            <span class="btn btn-primary recommendations-buttons">Все</span>
-            <span class="btn btn-light recommendations-buttons text-secondary">Организации</span>
-            <span class="btn btn-light recommendations-buttons text-secondary">Специалисты</span>
+            <a href=""><span class="btn btn-primary recommendations-buttons">Все</span></a>
+            <a href="?filter=organizations"><span class="btn btn-light recommendations-buttons text-secondary">Организации</span></a>
+            <a href="?filter=specialists"><span class="btn btn-light recommendations-buttons text-secondary">Специалисты</span></a>
         </div>
     </div>
     
-    <div class="row pt-5">
+    <div class="row pt-5" id="recommendation">
  
 @forelse ($ads as $ad)
  
@@ -124,9 +124,41 @@
 <div class="container mb-5 pb-5">
     <div class="row">
         <div class="col-12">
-            <span class="w-100 btn btn-light recommendations-buttons text-primary">Показать еще</span>
+            <span class="w-100 btn btn-light recommendations-buttons text-primary get_more" next_page="2">Показать еще</span>
         </div>
     </div>
 </div>
+<script>
+// Клік на об'єкт:
+$('body').on('click', '.get_more', function() {
+    
+    var next_page = $('.get_more').attr('next_page');
+    
+    // Відправляю дані:
+    $.ajax({
+        type: 'get',
+        url: '{{URL::to('/')}}/api/get_recommendations?type={{$type}}&page=' + next_page,
+    })
+    .done (function (data) {
+        //console.log('form was submitted');
+        if(data.status == 200) {
+            $('#recommendation').append('recommendation');
+            
+            // Следующая страница
+            next_page = parseInt(next_page) + 1;
+            $('.get_more').attr('next_page', next_page);
+            console.log('next_page: ' + next_page);
+            console.log(data.items);
+        } else {
+            $('.get_more').remove();
+        }
+    })
+    .fail (function () {
+        //console.log('form error');
+    });
+    
+    return false;
+});
 
+</script>
 @endsection

@@ -13,6 +13,8 @@ use App\AdsCategories;
 use App\Banners;
 use App\Towns;
 use App\Users;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Input;
 
 class FrontController extends Controller
 {
@@ -29,10 +31,36 @@ class FrontController extends Controller
     // Главная:
     public function index()
 	{
+        
         $towns = $this->get_towns();
+        // Узнаю город для рекомендаций:
+        $favourite_town = Cookie::get('favourite_town');
+        if($favourite_town == null) {
+            $favourite_town = $towns[0]->id;
+        }
+        
+        
+        $filter = Input::get('filter');
+        if( $filter == 'organizations') {
+            $type = 1;
+        } else if( $filter == 'specialists') {
+            $type = 2;
+        } else {
+            $type = 0;
+        }
+
+        
         $banners = $this->get_banners();
-        $ads = Ads::orderBy('id','desc')->get();
-        return view('front.index', compact('banners','towns','ads'));
+        
+        // Беру объявлений города:
+        if($type > 0) {
+            $ads = Ads::where('town_id',$favourite_town)->where('type', $type)->where('moderation', 1)->orderBy('date','desc')->paginate(6);
+        } else {
+            $ads = Ads::where('town_id',$favourite_town)->where('moderation', 1)->orderBy('date','desc')->paginate(6);
+        }
+        
+        
+        return view('front.index', compact('banners','towns','ads','type'));
     }
 
     // 404:
@@ -280,6 +308,14 @@ class FrontController extends Controller
         // TODO: 
         dd($request);
     }
+    
+    public function chacheTown($id, Request $request)
+	{
+        $cookie = Cookie::make('favourite_town', $id);
+        
+        return redirect(URL::to('/'))->cookie($cookie);
+    }
+    
     
     
     
