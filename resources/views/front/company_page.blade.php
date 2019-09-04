@@ -53,8 +53,8 @@
 <?php 
         foreach ($sub_array as $sub_id => $sub_name) {
 ?> 
-            <div class="collapse" id="root_menu_{{$tmp}}">
-                <a href="" class="company-link">
+            <div class="collapse <?php if($name == $parent_category_to_expand) {echo 'show';} ?>" id="root_menu_{{$tmp}}">
+                <a href="{{URL::to('/')}}/company?categories_ids={{$sub_id}}" class="company-link">
                     <div class="w-100 mb-1 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">{{$sub_name}}</div>
                 </a>
             </div>

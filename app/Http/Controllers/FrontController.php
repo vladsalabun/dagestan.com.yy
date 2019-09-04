@@ -185,9 +185,29 @@ class FrontController extends Controller
         
         $max_center = array($longitude, $latitude);
         
+        /* ПОШУК: */
+        $input = Input::all();
+        $categories_ids = explode(',',Input::get('categories_ids'));
+        $search_text = Input::get('search');
+ 
+        if(count($categories_ids) == 1) {
+            if($categories_ids[0] > 0) {
+                $parent_category_to_expand = (new AdsCategories)->get_parent_name($categories_ids[0]);
+            }
+        } else {
+            $parent_category_to_expand = 0;
+        }
+
         
         $categories_tree = (new AdsCategories)->get_tree();
-        return view('front.company_page', compact('categories_tree', 'towns', 'ad', 'google_map_key', 'latitude', 'longitude', 'openstreetmap_api_key','maxZoom','initZoom','max_center'));
+        
+        // TODO: save search query? text, cats, results_count, date
+        
+        // TODO: get ads by search_param
+        //$ads = Ads::where('town_id',$favourite_town)->where('moderation', 1)->orderBy('date','desc')->paginate(6);
+        
+        
+        return view('front.company_page', compact('categories_tree', 'towns', 'ad', 'google_map_key', 'latitude', 'longitude', 'openstreetmap_api_key','maxZoom','initZoom','max_center','search_text','parent_category_to_expand'));
     }
     
     // Страница добавления объявления:

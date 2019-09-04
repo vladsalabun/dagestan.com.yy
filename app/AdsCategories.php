@@ -15,8 +15,13 @@ class AdsCategories extends Model
         return $this->belongsToMany('App\Ads', 'ads_has_categories', 'category_id', 'ad_id');
     }
     
-    // TODO: Get parent category:
-    
+    // Назва батьківської категорії:
+    public function get_parent_name($id)
+    {
+        $q = AdsCategories::where('id',$id)->first();
+        $q_parent = AdsCategories::where('id',$q->parent_id)->first();
+        return $q_parent->name;
+    }
     // Дерево категорий:
     public function get_tree()
     {   

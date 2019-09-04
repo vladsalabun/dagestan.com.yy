@@ -110,6 +110,10 @@
 </div>
 
 
+
+<form method="get" action="{{URL::to('/')}}/company" autocomplete="off" id="top-search-ajax">
+{{ csrf_field() }}
+<input type="hidden" name="categories_ids" value="{{$categories_ids}}" id="categories_search_field">
 <!-- Поиск: ---> 
 <div class="container-fluid mt-3 bg-light">
     <div class="row">
@@ -123,7 +127,7 @@
 <div class="container">
     <div class="row">
         <div class="col-5 col-md-8 col-lg-8 col-xl-8 p-2">
-            <input type="text" class="top-search-form" placeholder="Поиск услуг">
+            <input type="text" class="top-search-form" placeholder="Поиск услуг" id="search_text" value="{{$search_text}}">
         </div>
         <div class="col-4 col-md-2 col-lg-2 col-xl-2 p-2 top-search-category">
             <span class="text-muted top-search-category-link" data-toggle="collapse" href="#CategoryCollapse" role="button" aria-expanded="false" aria-controls="CategoryCollapse">
@@ -152,18 +156,106 @@
 <div class="container">
     <div class="row">
         <div class="col">
+        
+        <div class="pb-2" id="keywords_block">
+@forelse ($all_categories as $cat)
+<?php 
+    if (in_array($cat->id,$categories_ids_array)) {
+?>
+<span class="badge badge-info pointer" id="selected-category-{{$cat->id}}" cat_id="{{$cat->id}}">{{$cat->name}}</span>
+<?php    
+    }
+?>
+@empty
+@endforelse
+
+        </div>
+        
             <div class="collapse multi-collapse" id="CategoryCollapse">
                 <div class="p-3">
-                    <b>TODO: Тут будет список категорий</b><br>
-                    Лазер<br>
-                    Спа<br>
-                    Другое<br>
+<div class="row">
+@forelse ($all_categories as $cat)
+<?php 
+    if (in_array($cat->id,$categories_ids_array)) {
+?>
+<div class="col-4 text-center"><span class="underline-dotted no-underline pointer selected-category-for-search" cat_id="{{$cat->id}}" id="category-{{$cat->id}}">{{$cat->name}}</span></div>  
+<?php    
+    } else {
+?>
+<div class="col-4 text-center"><span class="underline-dotted no-underline pointer category-for-search" cat_id="{{$cat->id}}" id="category-{{$cat->id}}">{{$cat->name}}</span></div>  
+<?php    
+    }
+?>
+@empty
+@endforelse
+</div>
                 </div>
             </div>
         </div>
     </div> 
 </div> 
 
+<script>
+
+// Клік на об'єкт:
+$('body').on('click', '.category-for-search', function() {
+    var cat_id = $(this).attr('cat_id');
+    $('#keywords_block').append(' <span class="badge badge-info pointer" id="selected-category-' + cat_id + '" cat_id="' + cat_id + '">' + $(this).text() + '</span> ');
+    
+    $(this).toggleClass('category-for-search selected-category-for-search');
+    
+    
+    var old_cats = $('#categories_search_field').val();
+
+    if (old_cats.length == 0) {
+        $('#categories_search_field').val(cat_id);
+    } else {
+        var cats_array = $('#categories_search_field').val().split(',');
+        cats_array.push(cat_id);
+        $('#categories_search_field').val(cats_array.toString());
+    }
+
+    return false;
+});
+
+// Клік на об'єкт:
+$('body').on('click', '.selected-category-for-search', function() {
+    var cat_id = $(this).attr('cat_id');
+
+    $('#selected-category-' + cat_id).remove();
+    $(this).toggleClass('selected-category-for-search category-for-search');
+    
+    var old_cats = $('#categories_search_field').val();
+
+    if (old_cats.length == 0) {
+        
+    } else {
+        var cats_array = $('#categories_search_field').val().split(',');
+
+        for( var i = 0; i < cats_array.length; i++){ 
+           if ( cats_array[i] === cat_id) {
+             cats_array.splice(i, 1); 
+           }
+        }
+        
+        $('#categories_search_field').val(cats_array.toString());
+    }
+    
+    return false;
+});
+
+
+// Перехід до пошуку:
+$('body').on('click', '.top-search-button', function() {
+    
+    var selected_cats = $('#categories_search_field').val();
+    var search_text = $('#search_text').val();
+    
+    window.location.replace("{{URL::to('/')}}/company?categories_ids=" + selected_cats + "&search=" + search_text);
+
+    return false;
+});
+</script>
 
 
 
@@ -171,4 +263,5 @@
     </div>
 </div>
 <!-- /Поиск ---> 
+</form>
 

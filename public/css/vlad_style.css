@@ -7,7 +7,9 @@ h1,h2 {
 .no-underline:hover {
     text-decoration: none;
 }
-
+.pointer:hover {
+    cursor: pointer;
+}
 
 .flex-fill {
     flex: 1 1 auto;
@@ -193,4 +195,9 @@ select {
     -moz-appearance: none;
     text-indent: 1px;
     text-overflow: ''; 
+}
+
+/* Категории поиска */
+.selected-category-for-search {
+    font-weight: bold;
 }
