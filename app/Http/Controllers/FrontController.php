@@ -185,30 +185,105 @@ class FrontController extends Controller
         
         $max_center = array($longitude, $latitude);
         
+        $categories_tree = (new AdsCategories)->get_tree();
+        
         /* ПОШУК: */
+        $paginate = 6;
+        
         $input = Input::all();
         $categories_ids = explode(',',Input::get('categories_ids'));
         $search_text = Input::get('search');
- 
+
+        
         if(count($categories_ids) == 1) {
-            if($categories_ids[0] > 0) {
+            if($categories_ids[0] >= 1) {
                 $parent_category_to_expand = (new AdsCategories)->get_parent_name($categories_ids[0]);
+            } else {
+                $parent_category_to_expand = 0;
             }
         } else {
             $parent_category_to_expand = 0;
         }
 
+        $sort = array(
+            'asc', 'desc'
+        );
         
-        $categories_tree = (new AdsCategories)->get_tree();
+        // Беру промодерированные объявления:
+        $ads = Ads::where('moderation', 1);
         
+        // Ищу по заголовкам, если указана строка поиска:
+        if(Input::get('search') != null) {
+            $ads->where('title', 'like', '%' . Input::get('search') . '%');
+        }
+        
+        // Ищу по связям с категориями:
+        if(Input::get('categories_ids') != null) {
+            $ads->whereHas('categories', function ($query) use ($categories_ids) {
+                $query->whereIn('category_id', $categories_ids);
+            });
+        }
+        
+        // Ищу вилку цен:
+        if(Input::get('price_from') != null and Input::get('price_to') != null) {
+            $ads->where('average_price', '>', Input::get('price_from'))->where('average_price', '<', Input::get('price_to'));
+            
+        } else if (Input::get('price_from') != null and Input::get('price_to') == null) {
+            
+            // Ищу цену начиная с минимального значения:
+            $ads->where('average_price', '>', Input::get('price_from'));
+            
+        } else if (Input::get('price_from') == null and Input::get('price_to') != null) {
+            
+            // Ищу цену до максимального значения:
+            $ads->where('average_price', '<', Input::get('price_to'));
+            
+        } else {
+            
+        }
+
+        // Сортирую по типу:
+        if(Input::get('type') != null) {
+            if(Input::get('type') == 1) { 
+                $ads->orderBy('type', 'asc');
+                
+            }
+            if(Input::get('type') == 2) { 
+                $ads->orderBy('type', 'desc');
+                
+            }
+        }
+        
+        // Сортирую по дате:
+        if(Input::get('sort_date') != null) {
+            if(in_array(Input::get('sort_date'), $sort)) { 
+                $ads->orderBy('date', Input::get('sort_date'));
+            }
+        }
+        
+        // Сортирую по стоимости:
+        if(Input::get('sort_price') != null) {
+            if(in_array(Input::get('sort_price'), $sort)) { 
+                $ads->orderBy('average_price', Input::get('sort_price'));
+            }
+        }
+        
+
+        $ads = $ads->paginate($paginate);
+        
+        // TODO: маркери по тим же критеріям
         // TODO: save search query? text, cats, results_count, date
         
-        // TODO: get ads by search_param
-        //$ads = Ads::where('town_id',$favourite_town)->where('moderation', 1)->orderBy('date','desc')->paginate(6);
+        return view('front.company_page', compact('categories_tree', 'towns', 'ad', 'google_map_key', 'latitude', 'longitude', 'openstreetmap_api_key','maxZoom','initZoom','max_center','search_text','parent_category_to_expand','ads'));
         
-        
-        return view('front.company_page', compact('categories_tree', 'towns', 'ad', 'google_map_key', 'latitude', 'longitude', 'openstreetmap_api_key','maxZoom','initZoom','max_center','search_text','parent_category_to_expand'));
     }
+    
+    
+    
+    
+    
+    
+    
     
     // Страница добавления объявления:
     public function add_ad()

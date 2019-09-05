@@ -107,7 +107,7 @@
         </div>
         <div class="p-1">
             <p class="pt-3 pb-1 recommendation-link"><a href="{{URL::to('/')}}/ad/{{$ad->id}}">{{$ad->title}}</a></p>
-            <?Php echo Str::limit($ad->description, 120);?>
+            <?php echo Str::limit($ad->description, 120);?>
         </div>
     </div>
 @empty

@@ -235,7 +235,7 @@ mymap1.on('click', onMapClick1);
     <input type="text" name="work_expiriens" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Опыт работы">
 </div>
 <div class="form-group mb-3">
-    <input type="text" name="average_price" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Средняя цена за услуги">
+    <input type="number" step="100" name="average_price" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Средняя цена за услуги">
 </div>
     
     

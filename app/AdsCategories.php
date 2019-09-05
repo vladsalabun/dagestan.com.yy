@@ -19,7 +19,13 @@ class AdsCategories extends Model
     public function get_parent_name($id)
     {
         $q = AdsCategories::where('id',$id)->first();
+        if($q == null) {
+            return 0;
+        }
         $q_parent = AdsCategories::where('id',$q->parent_id)->first();
+        if($q_parent == null) {
+            return 0;
+        }
         return $q_parent->name;
     }
     // Дерево категорий:

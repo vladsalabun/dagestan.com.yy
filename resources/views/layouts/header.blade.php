@@ -12,10 +12,10 @@
 <!-- Меню слева: --->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link " href="{{URL::to('/')}}/company">Специалисты</a>
+            <a class="nav-link " href="{{URL::to('/')}}/company?filter=organizations">Специалисты</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="{{URL::to('/')}}/company">Организации</a>
+            <a class="nav-link " href="{{URL::to('/')}}/company?filter=specialists">Организации</a>
           </li>
         </ul>
 <!-- /Меню слева --->
@@ -114,6 +114,11 @@
 <form method="get" action="{{URL::to('/')}}/company" autocomplete="off" id="top-search-ajax">
 {{ csrf_field() }}
 <input type="hidden" name="categories_ids" value="{{$categories_ids}}" id="categories_search_field">
+<input type="hidden" name="price_from" value="{{Request::get('price_from')}}" id="price_from">
+<input type="hidden" name="price_to" value="{{Request::get('price_to')}}" id="price_to">
+<input type="hidden" name="sort_date" value="{{Request::get('sort_date')}}" id="sort_date">
+<input type="hidden" name="sort_price" value="{{Request::get('sort_price')}}" id="sort_price">
+<input type="hidden" name="type" value="{{Request::get('type')}}" id="type">
 <!-- Поиск: ---> 
 <div class="container-fluid mt-3 bg-light">
     <div class="row">
@@ -176,6 +181,7 @@
 <div class="row">
 @forelse ($all_categories as $cat)
 <?php 
+    if($cat->parent_id != 0) {
     if (in_array($cat->id,$categories_ids_array)) {
 ?>
 <div class="col-4 text-center"><span class="underline-dotted no-underline pointer selected-category-for-search" cat_id="{{$cat->id}}" id="category-{{$cat->id}}">{{$cat->name}}</span></div>  
@@ -184,6 +190,7 @@
 ?>
 <div class="col-4 text-center"><span class="underline-dotted no-underline pointer category-for-search" cat_id="{{$cat->id}}" id="category-{{$cat->id}}">{{$cat->name}}</span></div>  
 <?php    
+    }
     }
 ?>
 @empty
@@ -245,13 +252,19 @@ $('body').on('click', '.selected-category-for-search', function() {
 });
 
 
+
 // Перехід до пошуку:
 $('body').on('click', '.top-search-button', function() {
     
     var selected_cats = $('#categories_search_field').val();
     var search_text = $('#search_text').val();
+    var price_from = $('#price_from').val();
+    var price_to = $('#price_to').val();
+    var sort_date = $('#sort_date').val();
+    var sort_price = $('#sort_price').val();
+    var type = $('#type').val();
     
-    window.location.replace("{{URL::to('/')}}/company?categories_ids=" + selected_cats + "&search=" + search_text);
+    window.location.replace("{{URL::to('/')}}/company?categories_ids=" + selected_cats + "&search=" + search_text + '&price_from=' + price_from + '&price_to=' + price_to + '&sort_date=' + sort_date + '&sort_price=' + sort_price + '&type=' + type);
 
     return false;
 });
