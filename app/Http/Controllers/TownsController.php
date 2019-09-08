@@ -40,6 +40,8 @@ class TownsController extends Controller
    {
        $obj = new Towns;
        $obj->town = $request->town;
+       $obj->longitude = $request->longitude;
+       $obj->latitude = $request->latitude;
        $obj->save();  
        return redirect(URL::to('/').'/cp/edit_town/'.$obj->id); 
    }
@@ -63,6 +65,8 @@ class TownsController extends Controller
        if(isset($request->submit)) {
            $obj = Towns::where('id', $request->id)->first();
            $obj->town = $request->town;
+           $obj->longitude = $request->longitude;
+           $obj->latitude = $request->latitude;
            $obj->save(); 
        }
 

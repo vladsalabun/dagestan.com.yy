@@ -30,6 +30,15 @@
         <input type="text" class="form-control" value="{{$town->town}}" name="town" placeholder="Город" required>
     </th>
     <th style="width: 250px">
+<div class="input-group">
+    <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
+    <input type="text" class="form-control" id="lng" placeholder="longitude" name="longitude" value="{{$town->longitude}}">
+</div>
+        <br>
+<div class="input-group">
+    <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
+    <input type="text" class="form-control" id="lat" placeholder="latitude" name="latitude" value="{{$town->latitude}}">
+</div>
     </th>
 </tr>
     

@@ -248,6 +248,24 @@ $('body').on('click', '#save_sorting', function() {
 		id: 'mapbox.streets'
 	}).addTo(mymap);
 
+    
+<?php
+
+    foreach ($markers as $marker) {
+        
+        if($marker['img'] != null) {
+            $tmp_marker_popup = '<img src="'.URL::to('/').'/storage/'.$marker['img'].'" style="width: 100px;"><br><a href="'.URL::to('/').'/ad/'.$marker['id'].'">'.$marker['title'].'</a><br>'.$marker['address'];
+        } else {
+            $tmp_marker_popup = '<a href="'.URL::to('/').'/ad/'.$marker['id'].'">'.$marker['title'].'</a><br>'.$marker['address'];
+        }
+
+        
+        echo "L.marker([".$marker['longitude'].", ".$marker['latitude']."]).addTo(mymap).bindPopup('".$tmp_marker_popup."'); ";
+    }
+    
+?>
+    
+    /*
     // Відправляю дані:
     $.ajax({ type: 'get', url: '{{URL::to("/")}}/api/get_all_ads_markers', })
     .done (function (data) {
@@ -267,7 +285,7 @@ $('body').on('click', '#save_sorting', function() {
         }
  
     });
-    
+    */
     
     
 /*
@@ -365,46 +383,87 @@ $('#MapCollapse').on('shown.bs.collapse', function () {
 // Клік на об'єкт:
 $('body').on('click', '.get_more', function() {
     
-    var next_page = $('.get_more').attr('next_page');
+    var filter = '{{$filter}}'; 
     
-    var c = $('#categories_search_field').val(); console.log(c); 
-    var s = $('#search_text').val();
-    var f = $('#price_from').val();
-    var t = $('#price_to').val();
-    var d = $('#sort_date').val();
-    var p = $('#sort_price').val();
-    var t = $('#type').val();
+    if(filter.length == 0) {
     
+        var next_page = $('.get_more').attr('next_page');
+        
+        var c = $('#categories_search_field').val();
+        var s = $('#search_text').val();
+        var f = $('#price_from').val();
+        var t = $('#price_to').val();
+        var d = $('#sort_date').val();
+        var p = $('#sort_price').val();
+        var t = $('#type').val();
 
+        // Відправляю дані:
+        $.ajax({
+            type: 'get',
+            url: '{{URL::to('/')}}/api/get_more?categories_ids='+c+'&search='+s+'&price_from='+f+'&price_to='+t+'&sort_date='+d+'&sort_price='+p+'&type='+t+'&page=' + next_page,
+        })
+        .done (function (data) {
 
-    
-    // Відправляю дані:
-    $.ajax({
-        type: 'get',
-        url: '{{URL::to('/')}}/api/get_more?categories_ids='+c+'&search='+s+'&price_from='+f+'&price_to='+t+'&sort_date='+d+'&sort_price='+p+'&type='+t+'&page=' + next_page,
-    })
-    .done (function (data) {
-console.log(data);
-        if(data.status == 200) {
-           
-           $.each(data.items, function(index, value) {
+            if(data.status == 200) {
+               
+               $.each(data.items, function(index, value) {
 
-                $('#get_more').append('<div class="row mb-4"><div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 pb-3"><div class="recommendation-img-wrap bg-light ad-map" style="height:200px;"><img style="max-height:200px" class="img-fluid mx-auto d-block" src="' + value.img + '"></div></div><div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 pb-1"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"><p class="pb-1 company-page-company-link"><a href="{{URL::to('/')}}/ad/' + value.id + '" class="text-dark">' + value.title + '</a></p></div><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"><div class="row"><div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 mb-3"><div class="ad-address-block ad-address text-primary pl-4"><i class="fa fa-map-marker" aria-hidden="true"></i> ' + value.address + '</div></div><div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 mb-3"><div class="ad-address-block ad-address text-center text-primary"><span id="stars_1">' + value.stars + '</span> <i class="fa fa-star-o" aria-hidden="true"></i></div></div></div></div><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">' + value.description + '</div></div></div></div>')
-           });
-                            
-            
-            // Следующая страница
-            next_page = parseInt(next_page) + 1;
-            $('.get_more').attr('next_page', next_page);
-            console.log('next_page: ' + next_page);
-            
-        } else {
-            $('.get_more').remove();
-        }
-    })
-    .fail (function () {
-        //console.log('form error');
-    });
+                    $('#get_more').append('<div class="row mb-4"><div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 pb-3"><div class="recommendation-img-wrap bg-light ad-map" style="height:200px;"><img style="max-height:200px" class="img-fluid mx-auto d-block" src="' + value.img + '"></div></div><div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 pb-1"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"><p class="pb-1 company-page-company-link"><a href="{{URL::to('/')}}/ad/' + value.id + '" class="text-dark">' + value.title + '</a></p></div><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"><div class="row"><div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 mb-3"><div class="ad-address-block ad-address text-primary pl-4"><i class="fa fa-map-marker" aria-hidden="true"></i> ' + value.address + '</div></div><div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 mb-3"><div class="ad-address-block ad-address text-center text-primary"><span id="stars_1">' + value.stars + '</span> <i class="fa fa-star-o" aria-hidden="true"></i></div></div></div></div><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">' + value.description + '</div></div></div></div>')
+               });
+                                
+                
+                // Следующая страница
+                next_page = parseInt(next_page) + 1;
+                $('.get_more').attr('next_page', next_page);
+                console.log('next_page: ' + next_page);
+                
+            } else {
+                $('.get_more').remove();
+            }
+        })
+        .fail (function () {
+            //console.log('form error');
+        });
+    } else {
+        
+        var next_page = $('.get_more').attr('next_page');
+        
+        var c = $('#categories_search_field').val();
+        var s = $('#search_text').val();
+        var f = $('#price_from').val();
+        var t = $('#price_to').val();
+        var d = $('#sort_date').val();
+        var p = $('#sort_price').val();
+        var t = $('#type').val();
+
+        // Відправляю дані:
+        $.ajax({
+            type: 'get',
+            url: '{{URL::to('/')}}/api/get_more?filter='+filter+'&page='+next_page,
+        })
+        .done (function (data) {
+
+            if(data.status == 200) {
+               
+               $.each(data.items, function(index, value) {
+
+                    $('#get_more').append('<div class="row mb-4"><div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 pb-3"><div class="recommendation-img-wrap bg-light ad-map" style="height:200px;"><img style="max-height:200px" class="img-fluid mx-auto d-block" src="' + value.img + '"></div></div><div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 pb-1"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"><p class="pb-1 company-page-company-link"><a href="{{URL::to('/')}}/ad/' + value.id + '" class="text-dark">' + value.title + '</a></p></div><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"><div class="row"><div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 mb-3"><div class="ad-address-block ad-address text-primary pl-4"><i class="fa fa-map-marker" aria-hidden="true"></i> ' + value.address + '</div></div><div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 mb-3"><div class="ad-address-block ad-address text-center text-primary"><span id="stars_1">' + value.stars + '</span> <i class="fa fa-star-o" aria-hidden="true"></i></div></div></div></div><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">' + value.description + '</div></div></div></div>')
+               });
+                                
+                
+                // Следующая страница
+                next_page = parseInt(next_page) + 1;
+                $('.get_more').attr('next_page', next_page);
+                console.log('next_page: ' + next_page);
+                
+            } else {
+                $('.get_more').remove();
+            }
+        })
+        .fail (function () {
+            //console.log('form error');
+        });
+    }
     
     return false;
 });

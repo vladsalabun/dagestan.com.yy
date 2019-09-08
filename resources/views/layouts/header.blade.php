@@ -12,10 +12,10 @@
 <!-- Меню слева: --->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link " href="{{URL::to('/')}}/company?filter=organizations">Специалисты</a>
+            <a class="nav-link " href="{{URL::to('/')}}/company?filter=specialists">Специалисты</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="{{URL::to('/')}}/company?filter=specialists">Организации</a>
+            <a class="nav-link " href="{{URL::to('/')}}/company?filter=organizations">Организации</a>
           </li>
         </ul>
 <!-- /Меню слева --->
