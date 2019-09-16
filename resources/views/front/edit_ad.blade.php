@@ -26,8 +26,9 @@
 <!-- ФОРМА ДОБАВЛЕНИЯ ОРГАНИЗАЦИИ: --->
 <div class="tab-pane fade show active mt-5" id="organization" role="tabpanel" aria-labelledby="organization-tab">
 
-    <form method="post" action="{{URL::to('/')}}/post_edit_ad" autocomplete="off" id="">
+    <form method="post" action="{{URL::to('/')}}/post_edit_ad" autocomplete="off" id="" enctype="multipart/form-data">
         {{ csrf_field() }}
+        <input type="hidden" name="id" value="{{$ad->id}}">
         <input type="hidden" name="type" value="1">
 
 
@@ -62,7 +63,7 @@
 
 <div class="form-group mb-4">
     <label for="exampleFormControlTextarea1">Кратко об организации *:</label>
-    <textarea class="form-control agagro-form-style-textarea" rows="3" name="description" required>{{$ad->description}}</textarea>
+    <textarea class="form-control agagro-form-style-textarea" rows="3" name="description" required>{{strip_tags($ad->description)}}</textarea>
 </div>
 
     <!-- Соц. сети: --->
@@ -94,9 +95,9 @@
     <!-- /Соц. сети --->
 
 <div class="form-group mb-3"> 
-    @if ($ad->type != null)
+    @if ($ad->img != null)
     <p>Текущая фотография:</p>
-    <p><img src="{{$ad->img}}" class="w-100"></p>
+    <p><img src="{{URL::to('/')}}/storage/{{$ad->img}}" class="w-100"></p>
     <label for="exampleFormControlFile1">Загрузить новую:</label>
     <div class="agagro-form-style pt-2 pb-2 pl-3 pr-3">
         <input type="file" name="img" class="form-control-file" id="exampleFormControlFile1" placeholder="11">
@@ -113,7 +114,7 @@
 <div class="form-check mb-3 oferta-block">
   <input class="form-check-input" type="checkbox" value="1" id="oferta-check1" name="oferta" required>
   <label class="form-check-label" for="oferta">
-    Ознакомлен с <a href="">публичной офертой</a> и <a href="">политикой в области обработки персональных данных</a>, все условия принимаю
+    Ознакомлен с <a href="{{URL::to('/')}}/page/oferta">публичной офертой</a> и <a href="{{URL::to('/')}}/page/politika-obrabotki-personalnykh-dannykh">политикой в области обработки персональных данных</a>, все условия принимаю
   </label>
 </div>
 
@@ -135,13 +136,14 @@
   
 <!-- ФОРМА ДОБАВЛЕНИЯ СПЕЦИАЛИСТА: --->
 
-    <form method="post" action="{{URL::to('/')}}/post_edit_ad" autocomplete="off" id="">
+    <form method="post" action="{{URL::to('/')}}/post_edit_ad" autocomplete="off" id="" enctype="multipart/form-data">
         {{ csrf_field() }}
+        <input type="hidden" name="id" value="{{$ad->id}}">
         <input type="hidden" name="type" value="2">
 
 
 <div class="form-group mb-3">
-    <input type="text" name="title" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Заголовок *" required>
+    <input type="text" name="title" value="{{$ad->title}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Заголовок *" required>
 </div>
 
 
@@ -151,7 +153,7 @@
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
         
 <div class="form-group mb-3">
-    <input type="text" name="name" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Имя *" required>
+    <input type="text" name="name" value="{{$ad->name}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Имя *" required>
 </div>
 
         
@@ -159,7 +161,7 @@
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
         
 <div class="form-group mb-3">
-    <input type="text" name="surname" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Фамилия *" required>
+    <input type="text" name="surname" value="{{$ad->surname}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Фамилия *" required>
 </div>
       
         </div>
@@ -174,22 +176,22 @@
     <select class="form-control agagro-form-style towns-selection pt-2 pb-2 pl-3 pr-1" name="town" required></select>
 </div>
 <div class="form-group mb-3">
-    <input type="text" name="address" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Адрес *" required>
+    <input type="text" name="address" value="{{$ad->address}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Адрес *" required>
 </div>
 <div class="form-group mb-3">
-    <input type="text" name="phone" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Телефон *" required>
+    <input type="text" name="phone" value="{{$ad->phone}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Телефон *" required>
 </div>
 <div class="form-group mb-3">
-    <input type="text" name="email" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="e-mail">
+    <input type="text" name="email" value="{{$ad->email}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="e-mail">
 </div>
 <div class="form-group mb-3">
-    <input type="text" name="working_hours" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="График работы *" required>
+    <input type="text" name="working_hours" value="{{$ad->working_hours}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="График работы *" required>
 </div>
 <div class="form-group mb-3">
-    <input type="text" name="work_expiriens" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Опыт работы">
+    <input type="text" name="work_expiriens" value="{{$ad->work_expiriens}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Опыт работы">
 </div>
 <div class="form-group mb-3">
-    <input type="text" name="average_price" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Средняя цена за услуги">
+    <input type="text" name="average_price" value="{{$ad->average_price}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Средняя цена за услуги">
 </div>
     
     
@@ -205,7 +207,7 @@
 
 <div class="form-group mb-4">
     <label for="exampleFormControlTextarea1">Кратко об организации *:</label>
-    <textarea class="form-control agagro-form-style-textarea" rows="3" required name="description"></textarea>
+    <textarea class="form-control agagro-form-style-textarea" rows="3" required name="description">{{strip_tags($ad->description)}}</textarea>
 </div>
 
     <!-- Соц. сети: --->
@@ -214,10 +216,10 @@
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
         
 <div class="form-group mb-3">
-    <input type="text" name="instagram" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Instagram">
+    <input type="text" name="instagram" value="{{$ad->instagram}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Instagram">
 </div>
 <div class="form-group mb-3">
-    <input type="text" name="fb" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Facebook">
+    <input type="text" name="fb" value="{{$ad->fb}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="Facebook">
 </div>
 
         
@@ -225,10 +227,10 @@
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
         
 <div class="form-group mb-3">
-    <input type="text" name="vk" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="VK">
+    <input type="text" name="vk" value="{{$ad->vk}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="VK">
 </div>
 <div class="form-group mb-3">
-    <input type="text" name="ok" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="OK">
+    <input type="text" name="ok" value="{{$ad->ok}}" class="form-control agagro-form-style pt-2 pb-2 pl-3 pr-3" placeholder="OK">
 </div>
       
         </div>
@@ -237,9 +239,9 @@
     <!-- /Соц. сети --->
 
 <div class="form-group mb-3"> 
-    @if ($ad->type != null)
+    @if ($ad->img != null)
     <p>Текущая фотография:</p>
-    <p><img src="{{$ad->img}}" class="w-100"></p>
+    <p><img src="{{URL::to('/')}}/storage/{{$ad->img}}" class="w-100"></p>
     <label for="exampleFormControlFile1">Загрузить новую:</label>
     <div class="agagro-form-style pt-2 pb-2 pl-3 pr-3">
         <input type="file" name="img" class="form-control-file" id="exampleFormControlFile1" placeholder="11">
@@ -254,11 +256,12 @@
 
 
 <div class="form-check mb-3 oferta-block">
-  <input class="form-check-input" type="checkbox" value="1" id="oferta-check2" name="oferta" required>
+  <input class="form-check-input" type="checkbox" value="1" id="oferta-check1" name="oferta" required>
   <label class="form-check-label" for="oferta">
-    Ознакомлен с <a href="">публичной офертой</a> и <a href="">политикой в области обработки персональных данных</a>, все условия принимаю
+    Ознакомлен с <a href="{{URL::to('/')}}/page/oferta">публичной офертой</a> и <a href="{{URL::to('/')}}/page/politika-obrabotki-personalnykh-dannykh">политикой в области обработки персональных данных</a>, все условия принимаю
   </label>
 </div>
+
 
     <div class="form-group mb-3">
         <input type="submit" name="delete" class="btn btn-danger add-button" id="submit_organization" value="Удалить объявление">
@@ -283,7 +286,7 @@
         </div>
         <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
            <p>Поля, отмеченные звездочкой (*), обязательны для заполнения.</p>
-           <p>Правила пользования услугами можно прочитатть <a href="">здесь</a>.</p>
+           <p>Правила пользования услугами можно прочитатть <a href="{{URL::to('/')}}/page/rules">здесь</a>.</p>
         </div>
     </div>
 </div>

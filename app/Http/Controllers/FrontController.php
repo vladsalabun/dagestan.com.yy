@@ -70,7 +70,14 @@ class FrontController extends Controller
         $towns = $this->get_towns();
         
         return view('front.404', compact('towns'));
-    } 
+    }
+    public function on_moderation()
+	{
+        $towns = $this->get_towns();
+        
+        return view('front.on_moderation', compact('towns'));
+    }
+    
     
     // Страница объявления:
     public function ad_page($id)
@@ -86,6 +93,9 @@ class FrontController extends Controller
         $ad = Ads::where('id',$id)->first();
         if($ad == null) {
             return redirect(URL::to('/').'/404'); 
+        }
+        if($ad->moderation == 0) {
+            return redirect(URL::to('/').'/on_moderation'); 
         }
         
         $google_map_key = OptionsController::get_option('google_map_key'); 
@@ -478,7 +488,7 @@ class FrontController extends Controller
                     $banner_filename = time().'_'.$uploadedFile->getClientOriginalName();
 
                     Storage::disk('public')->putFileAs(
-                        'ads/',
+                        'photos/',
                         $uploadedFile,
                         $banner_filename
                     );
@@ -487,7 +497,7 @@ class FrontController extends Controller
                     Ads::where('id', $obj->id)
                     ->update(
                         array(
-                            'img' => 'ads/'.$banner_filename, 
+                            'img' => 'photos/'.$banner_filename, 
                         )
                     ); 
                     
@@ -541,8 +551,96 @@ class FrontController extends Controller
     }
     public function post_edit_ad(Request $request)
 	{
-        // TODO: 
-        dd($request);
+    
+        // Ищу объявление:
+        $obj = Ads::where('id',$request->id)->first();
+        
+        if(Auth::user()->id == $obj->user_id) {
+            
+           if(isset($request->delete)) {
+               
+               // Беру обєкт:
+               $obj = Ads::where('id', $request->id)->first();
+               // Видаляю зображення:
+               if($obj->img != null) {
+                    Storage::disk('public')->delete($obj->img);
+               }
+               // Видаляю категорії:
+               DB::table('ads_has_categories')
+                   ->where('ad_id',$obj->id)
+                   ->delete();
+               
+               Ads::where('id', $request->id)->delete();
+               return redirect(URL::to('/').'/home');
+           }       // update ads 
+           if(isset($request->submit)) {
+            
+           $obj->title = $request->title;
+           $obj->town_id = $request->town;
+           $obj->description = $request->description;
+           $obj->price = $request->price;
+           $obj->address = $request->address;
+           $obj->site = $request->site;
+           $obj->email = $request->email;
+           $obj->phone = $request->phone;
+           $obj->vk = $request->vk;
+           $obj->ok = $request->ok;
+           $obj->instagram = $request->instagram;
+           $obj->fb = $request->fb;
+           $obj->moderation = 0;
+           $obj->name = $request->name;
+           $obj->surname = $request->surname;
+           $obj->working_hours = $request->working_hours;
+           $obj->work_expiriens = $request->work_expiriens;
+           $obj->average_price = $request->average_price;
+      
+           $obj->save();  
+
+            // Если загружен файл:
+            if($request->hasFile('img')) {
+                
+                $uploadedFile = $request->file('img');
+                $banner_filename = time().'_'.$uploadedFile->getClientOriginalName();
+
+                Storage::disk('public')->putFileAs(
+                    'photos/',
+                    $uploadedFile,
+                    $banner_filename
+                );
+                
+                // Обновляю banner:
+                Ads::where('id', $obj->id)
+                ->update(
+                    array(
+                        'img' => 'photos/'.$banner_filename, 
+                    )
+                ); 
+                
+            }
+               
+                
+               
+               
+                if(isset($request->sub_category)) {
+                    
+                    DB::table('ads_has_categories')->where('ad_id',$obj->id)->delete();
+                    
+                    // Категории:
+                    DB::table('ads_has_categories')->insertGetId(
+                        array(
+                            'ad_id' => $obj->id,
+                            'category_id' => $request->sub_category,
+                        )
+                    );
+                }
+                
+                return redirect(URL::to('/').'/success'); 
+           
+           }
+        }
+        
+        return redirect('/404');
+
     }
     
     public function chacheTown($id, Request $request)

@@ -8,6 +8,7 @@
 
 Route::get('/', 'FrontController@index');
 Route::get('/404', 'FrontController@error404');
+Route::get('/on_moderation', 'FrontController@on_moderation');
 
 // Объявления:
 Route::get('/ad/{id}', 'FrontController@ad_page');
@@ -44,8 +45,7 @@ Route::group(['middleware' => ['auth']], function() {
 Route::group(['middleware' => ['auth','checkAdmin']], function () {
     
     Route::group(['prefix' => 'cp'], function () {
-        
-        // TODO: защитить админку паролем!
+
         Route::get('/', 'AdminMainController@index');
         Route::get('/banners', 'AdminMainController@banners');
         

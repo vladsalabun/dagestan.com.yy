@@ -134,7 +134,7 @@ class AdsController extends Controller
             $banner_filename = time().'_'.$uploadedFile->getClientOriginalName();
 
             Storage::disk('public')->putFileAs(
-                'ads/',
+                'photos/',
                 $uploadedFile,
                 $banner_filename
             );
@@ -143,7 +143,7 @@ class AdsController extends Controller
             Ads::where('id', $obj->id)
             ->update(
                 array(
-                    'img' => 'ads/'.$banner_filename, 
+                    'img' => 'photos/'.$banner_filename, 
                 )
             ); 
             
@@ -303,7 +303,7 @@ class AdsController extends Controller
                 $banner_filename = time().'_'.$uploadedFile->getClientOriginalName();
 
                 Storage::disk('public')->putFileAs(
-                    'ads/',
+                    'photos/',
                     $uploadedFile,
                     $banner_filename
                 );
@@ -312,7 +312,7 @@ class AdsController extends Controller
                 Ads::where('id', $obj->id)
                 ->update(
                     array(
-                        'img' => 'ads/'.$banner_filename, 
+                        'img' => 'photos/'.$banner_filename, 
                     )
                 ); 
                 
@@ -339,7 +339,7 @@ class AdsController extends Controller
            $obj->save(); 
        }
 
-       return redirect(URL::to('/').'/cp/edit_ads/'.$obj->id); 
+       return redirect(URL::to('/').'/cp/edit_photos/'.$obj->id); 
 
    }
 
