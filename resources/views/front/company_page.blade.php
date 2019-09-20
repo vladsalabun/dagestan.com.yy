@@ -112,27 +112,6 @@
 </div>
 
 
-<hr>
-<div class="form-check">
-  <input class="form-check-input" type="radio" name="form_type" id="form_type0" value="" checked>
-  <label class="form-check-label" for="form_type0">
-    Все объявления
-  </label>
-</div>
-<div class="form-check">
-  <input class="form-check-input" type="radio" name="form_type" id="form_type1" value="1" @if(Request::get('type') == 1) checked @endif>
-  <label class="form-check-label" for="form_type1">
-    Сначала организации
-  </label>
-</div>
-<div class="form-check">
-  <input class="form-check-input" type="radio" name="form_type" id="form_type2" value="2" @if(Request::get('type') == 2) checked @endif>
-  <label class="form-check-label" for="form_type2">
-    Сначала специалисты
-  </label>
-</div>
-
-
 
 
       </div>
@@ -206,10 +185,19 @@ $('body').on('click', '#save_sorting', function() {
             </div>
         </a>
 <?php 
-        foreach ($sub_array as $sub_id => $sub_name) {
+        foreach ($sub_array as $sub_id => $sub_name) { 
 ?> 
             <div class="collapse <?php if($name === $parent_category_to_expand) {echo 'show';} ?>" id="root_menu_{{$tmp}}">
-                <a href="{{URL::to('/')}}/company?categories_ids={{$sub_id}}" class="company-link">
+                <a href="{{URL::to('/')}}/company?categories_ids={{$sub_id}}<?php 
+          $filter = Request::input('filter');
+                    if($filter == 'specialists') {
+                        echo '&filter=specialists';
+                    }
+                    if($filter == 'organizations') {
+                        echo '&filter=organizations';
+                    }
+                
+?>" class="company-link">
                     <div class="w-100 mb-1 pt-2 pb-2 pl-4 pr-4 recommendations-buttons company-link">{{$sub_name}}</div>
                 </a>
             </div>
@@ -385,22 +373,25 @@ $('body').on('click', '.get_more', function() {
     
     var filter = '{{$filter}}'; 
     
-    if(filter.length == 0) {
+    if(filter.length != 0) {
     
-        var next_page = $('.get_more').attr('next_page');
+        var next_page = $('.get_more').attr('next_page'); console.log(next_page);
         
         var c = $('#categories_search_field').val();
         var s = $('#search_text').val();
         var f = $('#price_from').val();
-        var t = $('#price_to').val();
+        var to = $('#price_to').val();
         var d = $('#sort_date').val();
         var p = $('#sort_price').val();
         var t = $('#type').val();
+        var fi = $('#filter').val();
 
+        console.log('categories_ids='+c+'&search='+s+'&price_from='+f+'&price_to='+to+'&sort_date='+d+'&sort_price='+p+'&filter='+fi+'&page=' + next_page);
+        
         // Відправляю дані:
         $.ajax({
             type: 'get',
-            url: '{{URL::to('/')}}/api/get_more?categories_ids='+c+'&search='+s+'&price_from='+f+'&price_to='+t+'&sort_date='+d+'&sort_price='+p+'&type='+t+'&page=' + next_page,
+            url: '{{URL::to('/')}}/api/get_more?categories_ids='+c+'&search='+s+'&price_from='+f+'&price_to='+to+'&sort_date='+d+'&sort_price='+p+'&filter='+fi+'&page=' + next_page,
         })
         .done (function (data) {
 
@@ -426,7 +417,7 @@ $('body').on('click', '.get_more', function() {
         });
     } else {
         
-        var next_page = $('.get_more').attr('next_page');
+        var next_page = $('.get_more').attr('next_page'); 
         
         var c = $('#categories_search_field').val();
         var s = $('#search_text').val();
@@ -435,6 +426,7 @@ $('body').on('click', '.get_more', function() {
         var d = $('#sort_date').val();
         var p = $('#sort_price').val();
         var t = $('#type').val();
+
 
         // Відправляю дані:
         $.ajax({

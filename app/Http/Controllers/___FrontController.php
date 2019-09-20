@@ -195,9 +195,46 @@ class FrontController extends Controller
         
         $max_center = array($longitude, $latitude);
         
-        $categories_ids = explode(',',Input::get('categories_ids'));
         $categories_tree = (new AdsCategories)->get_tree();
         
+        
+        
+        
+        
+        
+        /* ПОШУК: */
+        $paginate = 6;
+        
+        $input = Input::all();
+        $categories_ids = explode(',',Input::get('categories_ids'));
+        $search_text = Input::get('search');
+        
+        // Узнаю город для рекомендаций:
+        $favourite_town = Cookie::get('favourite_town');
+        if($favourite_town == null) {
+            $favourite_town = $towns[0]->id;
+        }
+        
+        $favourite_town_info = Towns::where('id',$favourite_town)->first();
+        
+        if($favourite_town_info->longitude != null and $favourite_town_info->latitude != null) {
+            $max_center[0] = $favourite_town_info->latitude;
+            $max_center[1] = $favourite_town_info->longitude;
+        }
+        
+        $filter = Input::get('filter'); 
+        if( $filter == 'organizations') {
+            $type = 1;
+        } else if( $filter == 'specialists') {
+            $type = 2;
+        } else {
+            $type = 0;
+        }
+        
+        $parent_category_to_expand = 0;
+        
+        if($type == 0) {
+
             if(count($categories_ids) == 1) {
                 if($categories_ids[0] >= 1) {
                     $parent_category_to_expand = (new AdsCategories)->get_parent_name($categories_ids[0]);
@@ -205,12 +242,89 @@ class FrontController extends Controller
                     $parent_category_to_expand = 0;
                 }
             } else {
-                $parent_category_to_expand = '';
+                
             }
 
+            $sort = array(
+                'asc', 'desc'
+            );
+            
+            // Беру промодерированные объявления:
+            $ads = Ads::where('moderation', 1)->where('town_id',$favourite_town);
+            $ads_full = Ads::where('moderation', 1)->where('town_id',$favourite_town);
+            
+            // Ищу по заголовкам, если указана строка поиска:
+            if(Input::get('search') != null) {
+                $ads->where('title', 'like', '%' . Input::get('search') . '%');
+                $ads_full->where('title', 'like', '%' . Input::get('search') . '%');
+            }
+            
+            // Ищу по связям с категориями:
+            if(Input::get('categories_ids') != null) {
+                $ads->whereHas('categories', function ($query) use ($categories_ids) {
+                    $query->whereIn('category_id', $categories_ids);
+                });
+                $ads_full->whereHas('categories', function ($query) use ($categories_ids) {
+                    $query->whereIn('category_id', $categories_ids);
+                });
+            }
+            
+            // Ищу вилку цен:
+            if(Input::get('price_from') != null and Input::get('price_to') != null) {
+                $ads->where('average_price', '>', Input::get('price_from'))->where('average_price', '<', Input::get('price_to'));
+                $ads_full->where('average_price', '>', Input::get('price_from'))->where('average_price', '<', Input::get('price_to'));
+                
+            } else if (Input::get('price_from') != null and Input::get('price_to') == null) {
+                
+                // Ищу цену начиная с минимального значения:
+                $ads->where('average_price', '>', Input::get('price_from'));
+                $ads_full->where('average_price', '>', Input::get('price_from'));
+                
+            } else if (Input::get('price_from') == null and Input::get('price_to') != null) {
+                
+                // Ищу цену до максимального значения:
+                $ads->where('average_price', '<', Input::get('price_to'));
+                $ads_full->where('average_price', '<', Input::get('price_to'));
+                
+            } else {
+                
+            }
+
+            // Сортирую по типу:
+            if(Input::get('type') != null) {
+                if(Input::get('type') == 1) { 
+                    $ads->orderBy('type', 'asc');
+                    $ads_full->orderBy('type', 'asc');
+                    
+                }
+                if(Input::get('type') == 2) { 
+                    $ads->orderBy('type', 'desc');
+                    $ads_full->orderBy('type', 'desc');
+                    
+                }
+            }
+            
+            // Сортирую по дате:
+            if(Input::get('sort_date') != null) {
+                if(in_array(Input::get('sort_date'), $sort)) { 
+                    $ads->orderBy('date', Input::get('sort_date'));
+                    $ads_full->orderBy('date', Input::get('sort_date'));
+                }
+            }
+            
+            // Сортирую по стоимости:
+            if(Input::get('sort_price') != null) {
+                if(in_array(Input::get('sort_price'), $sort)) { 
+                    $ads->orderBy('average_price', Input::get('sort_price'));
+                    $ads_full->orderBy('average_price', Input::get('sort_price'));
+                }
+            }
         
-        $ads = $this->searchAds('paginated');
-        $ads_full = $this->searchAds('full');
+            $ads = $ads->paginate($paginate);
+            
+            
+            // маркери по тим же критеріям
+            $ads_full = $ads_full->get(); 
 
             $markers = array(); 
             
@@ -224,6 +338,16 @@ class FrontController extends Controller
                     $markers[$ad_tmp_id]['longitude'] = $ad_tmp->longitude;
                     $markers[$ad_tmp_id]['latitude'] = $ad_tmp->latitude;
                 }
+            }
+        
+        
+        } else {
+            // Фильтр по спеціалістам
+             // Беру объявлений города:
+            if($type > 0) {
+                $ads = Ads::where('town_id',$favourite_town)->where('type', $type)->where('moderation', 1)->orderBy('date','desc')->paginate($paginate);
+            } else {
+                $ads = Ads::where('town_id',$favourite_town)->where('moderation', 1)->orderBy('date','desc')->paginate($paginate);
             }
             
             $markers = array(); 
@@ -239,7 +363,7 @@ class FrontController extends Controller
                     $markers[$ad_tmp_id]['latitude'] = $ad_tmp->latitude;
                 }
             }
-        
+        }
         
         
 
@@ -526,250 +650,7 @@ class FrontController extends Controller
         return back()->cookie($cookie);
     }
     
-    /*
-        Пошук:
-    */
-    public function searchAds($return_count)
-	{
-        
-        $towns = $this->get_towns();
-        
-        /* ПОШУК: */
-        $paginate = 10;
-        
-        $categories_ids = explode(',',Input::get('categories_ids'));
-        $search_text = Input::get('search');
-        
-        // Узнаю город для рекомендаций:
-        $favourite_town = Cookie::get('favourite_town');
-        if($favourite_town == null) {
-            $favourite_town = $towns[0]->id;
-        }
-        
-        $favourite_town_info = Towns::where('id',$favourite_town)->first();
-        
-        if($favourite_town_info->longitude != null and $favourite_town_info->latitude != null) {
-            $max_center[0] = $favourite_town_info->latitude;
-            $max_center[1] = $favourite_town_info->longitude;
-        }
-        
-        $filter = Input::get('filter'); 
-        if( $filter == 'organizations') {
-            $type = 1;
-        } else if( $filter == 'specialists') {
-            $type = 2;
-        } else {
-            $type = 0;
-        }
-        
-        $parent_category_to_expand = 0;
-        
-            $sort = array(
-                'asc', 'desc'
-            );
-        
-        if($type == 0) {
-
-
-            // Беру промодерированные объявления:
-            $ads = Ads::where('moderation', 1)->where('town_id',$favourite_town);
-            $ads_full = Ads::where('moderation', 1)->where('town_id',$favourite_town);
-            
-            // Ищу по заголовкам, если указана строка поиска:
-            if(Input::get('search') != null) {
-                $ads->where('title', 'like', '%' . Input::get('search') . '%');
-                $ads_full->where('title', 'like', '%' . Input::get('search') . '%');
-            }
-            
-            // Ищу по связям с категориями:
-            if(Input::get('categories_ids') != null) {
-                $ads->whereHas('categories', function ($query) use ($categories_ids) {
-                    $query->whereIn('category_id', $categories_ids);
-                });
-                $ads_full->whereHas('categories', function ($query) use ($categories_ids) {
-                    $query->whereIn('category_id', $categories_ids);
-                });
-            }
-            
-            // Ищу вилку цен:
-            if(Input::get('price_from') != null and Input::get('price_to') != null) {
-                $ads->where('average_price', '>', Input::get('price_from'))->where('average_price', '<', Input::get('price_to'));
-                $ads_full->where('average_price', '>', Input::get('price_from'))->where('average_price', '<', Input::get('price_to'));
-                
-            } else if (Input::get('price_from') != null and Input::get('price_to') == null) {
-                
-                // Ищу цену начиная с минимального значения:
-                $ads->where('average_price', '>', Input::get('price_from'));
-                $ads_full->where('average_price', '>', Input::get('price_from'));
-                
-            } else if (Input::get('price_from') == null and Input::get('price_to') != null) {
-                
-                // Ищу цену до максимального значения:
-                $ads->where('average_price', '<', Input::get('price_to'));
-                $ads_full->where('average_price', '<', Input::get('price_to'));
-                
-            } else {
-                
-            }
-
-            // Сортирую по типу:
-            if(Input::get('type') != null) {
-                if(Input::get('type') == 1) { 
-                    $ads->orderBy('type', 'asc');
-                    $ads_full->orderBy('type', 'asc');
-                    
-                }
-                if(Input::get('type') == 2) { 
-                    $ads->orderBy('type', 'desc');
-                    $ads_full->orderBy('type', 'desc');
-                    
-                }
-            }
-            
-            // Сортирую по дате:
-            if(Input::get('sort_date') != null) {
-                if(in_array(Input::get('sort_date'), $sort)) { 
-                    $ads->orderBy('date', Input::get('sort_date'));
-                    $ads_full->orderBy('date', Input::get('sort_date'));
-                }
-            }
-            
-            // Сортирую по стоимости:
-            if(Input::get('sort_price') != null) {
-                if(in_array(Input::get('sort_price'), $sort)) { 
-                    $ads->orderBy('average_price', Input::get('sort_price'));
-                    $ads_full->orderBy('average_price', Input::get('sort_price'));
-                }
-            }
-        
-            $ads = $ads->paginate($paginate);
-            
-            
-            // маркери по тим же критеріям
-            $ads_full = $ads_full->get(); 
-
-            $markers = array(); 
-            
-            foreach ($ads_full as $ad_tmp_id => $ad_tmp) {
-                
-                if($ad_tmp->longitude != null and $ad_tmp->latitude != null) {
-                    $markers[$ad_tmp_id]['id'] = $ad_tmp->id;
-                    $markers[$ad_tmp_id]['title'] = $ad_tmp->title;
-                    $markers[$ad_tmp_id]['address'] = $ad_tmp->address;
-                    $markers[$ad_tmp_id]['img'] = $ad_tmp->img;
-                    $markers[$ad_tmp_id]['longitude'] = $ad_tmp->longitude;
-                    $markers[$ad_tmp_id]['latitude'] = $ad_tmp->latitude;
-                }
-            }
-        
-        
-        } else {
-            // Фильтр по спеціалістам
-             // Беру объявлений города:
-            if($type > 0) {
-                
-                // organizations == 1
-                $ads = Ads::where('town_id',$favourite_town)
-                    ->where('type', $type)
-                    ->where('moderation', 1);
-                    
-                $ads_full = Ads::where('town_id',$favourite_town)
-                    ->where('type', $type)
-                    ->where('moderation', 1);
-                    
-            } else {
-                // 
-                $ads = Ads::where('town_id',$favourite_town)
-                    ->where('moderation', 1)
-                    ->orderBy('date','desc');
-                    
-                $ads_full = Ads::where('town_id',$favourite_town)
-                    ->where('type', $type)
-                    ->where('moderation', 1)
-                    ->orderBy('date','desc');
-
-            }
-            
-            // Ищу по заголовкам, если указана строка поиска:
-            if(Input::get('search') != null) {
-                $ads->where('title', 'like', '%' . Input::get('search') . '%');
-                $ads_full->where('title', 'like', '%' . Input::get('search') . '%');
-            }
-            
-            // Ищу по связям с категориями:
-            if(Input::get('categories_ids') != null) {
-                $ads->whereHas('categories', function ($query) use ($categories_ids) {
-                    $query->whereIn('category_id', $categories_ids);
-                });
-                $ads_full->whereHas('categories', function ($query) use ($categories_ids) {
-                    $query->whereIn('category_id', $categories_ids);
-                });
-            }
-            
-            // Ищу вилку цен:
-            if(Input::get('price_from') != null and Input::get('price_to') != null) {
-                $ads->where('average_price', '>', Input::get('price_from'))->where('average_price', '<', Input::get('price_to'));
-                $ads_full->where('average_price', '>', Input::get('price_from'))->where('average_price', '<', Input::get('price_to'));
-                
-            } else if (Input::get('price_from') != null and Input::get('price_to') == null) {
-                
-                // Ищу цену начиная с минимального значения:
-                $ads->where('average_price', '>', Input::get('price_from'));
-                $ads_full->where('average_price', '>', Input::get('price_from'));
-                
-            } else if (Input::get('price_from') == null and Input::get('price_to') != null) {
-                
-                // Ищу цену до максимального значения:
-                $ads->where('average_price', '<', Input::get('price_to'));
-                $ads_full->where('average_price', '<', Input::get('price_to'));
-                
-            } else {
-                
-            }
-
-            // Сортирую по типу:
-            if(Input::get('type') != null) { 
-                if(Input::get('type') == 1) { 
-                    $ads->orderBy('type', 'asc');
-                    $ads_full->orderBy('type', 'asc');
-                    
-                }
-                if(Input::get('type') == 2) { 
-                    $ads->orderBy('type', 'desc');
-                    $ads_full->orderBy('type', 'desc');
-                    
-                }
-            }
-
-            // Сортирую по дате:
-            if(Input::get('sort_date') != null) { 
-                if(in_array(Input::get('sort_date'), $sort)) { 
-                    $ads->orderBy('date', Input::get('sort_date'));
-                    $ads_full->orderBy('date', Input::get('sort_date'));
-                }
-            }
-            
-            // Сортирую по стоимости:
-            if(Input::get('sort_price') != null) {
-                if(in_array(Input::get('sort_price'), $sort)) { 
-                    $ads->orderBy('average_price', Input::get('sort_price'));
-                    $ads_full->orderBy('average_price', Input::get('sort_price'));
-                }
-            }
-            
-            $ads = $ads->paginate($paginate); 
-            
-            // маркери по тим же критеріям
-            $ads_full = $ads_full->get();
-        }
-            if($return_count == 'paginated') {
-                return $ads;
-            } else {
-                return $ads_full;
-            }
-            
-            
-    }
+    
     
     
     

@@ -170,7 +170,7 @@
                 @if(count($ad->categories) > 0)
                     <span>Категория:</span><span class="ad_extend">
                     @forelse ($ad->categories as $category)
-                        <a href="{{URL::to('/')}}/category?id={{$category->id}}">{{$category->name}}</a>
+                        <a href="{{URL::to('/')}}/company?categories_ids={{$category->id}}">{{$category->name}}</a>
                     @empty
                     @endforelse
                 @endif

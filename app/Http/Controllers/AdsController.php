@@ -339,7 +339,7 @@ class AdsController extends Controller
            $obj->save(); 
        }
 
-       return redirect(URL::to('/').'/cp/edit_photos/'.$obj->id); 
+       return redirect(URL::to('/').'/cp/edit_ads/'.$obj->id); 
 
    }
 

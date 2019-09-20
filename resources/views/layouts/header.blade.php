@@ -119,6 +119,7 @@
 <input type="hidden" name="sort_date" value="{{Request::get('sort_date')}}" id="sort_date">
 <input type="hidden" name="sort_price" value="{{Request::get('sort_price')}}" id="sort_price">
 <input type="hidden" name="type" value="{{Request::get('type')}}" id="type">
+<input type="hidden" name="filter" value="{{Request::input('filter')}}" id="filter">
 <!-- Поиск: ---> 
 <div class="container-fluid mt-3 bg-light">
     <div class="row">
@@ -132,7 +133,7 @@
 <div class="container">
     <div class="row">
         <div class="col-5 col-md-8 col-lg-8 col-xl-8 p-2">
-            <input type="text" class="top-search-form" placeholder="Поиск услуг" id="search_text" value="{{$search_text}}">
+            <input type="text" name="search" class="top-search-form" placeholder="Поиск услуг" id="search_text" value="{{$search_text}}">
         </div>
         <div class="col-4 col-md-2 col-lg-2 col-xl-2 p-2 top-search-category">
             <span class="text-muted top-search-category-link" data-toggle="collapse" href="#CategoryCollapse" role="button" aria-expanded="false" aria-controls="CategoryCollapse">
@@ -262,9 +263,9 @@ $('body').on('click', '.top-search-button', function() {
     var price_to = $('#price_to').val();
     var sort_date = $('#sort_date').val();
     var sort_price = $('#sort_price').val();
-    var type = $('#type').val();
+    var filter = $('#filter').val();
     
-    window.location.replace("{{URL::to('/')}}/company?categories_ids=" + selected_cats + "&search=" + search_text + '&price_from=' + price_from + '&price_to=' + price_to + '&sort_date=' + sort_date + '&sort_price=' + sort_price + '&type=' + type);
+    window.location.replace("{{URL::to('/')}}/company?categories_ids=" + selected_cats + "&search=" + search_text + '&price_from=' + price_from + '&price_to=' + price_to + '&sort_date=' + sort_date + '&sort_price=' + sort_price + '&filter=' + filter);
 
     return false;
 });

@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
         $all_categories = AdsCategories::orderBy('name', 'asc')->get();
         view()->share('all_categories', $all_categories);
         
-        view()->share('search_text', Input::get('search_text'));
+        view()->share('search_text', Input::get('search'));
         
          $categories_ids_array = array();
         
