@@ -61,7 +61,7 @@ class FrontController extends Controller
         }
         
         
-        return view('front.index', compact('banners','towns','ads','type'));
+        return view('front.index', compact('banners','towns','ads','type', 'filter'));
     }
 
     // 404:
@@ -191,7 +191,7 @@ class FrontController extends Controller
         }
         
         $maxZoom = 18;
-        $initZoom = 7;
+        $initZoom = 10;
         
         $max_center = array($longitude, $latitude);
         

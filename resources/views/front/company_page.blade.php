@@ -19,9 +19,9 @@
         </div>
         <div class="col-sm-12 col-md-12 col-lg-9 col-xl-9 text-right">
             
-            <span class="btn btn-light recommendations-buttons text-secondary mb-1" data-toggle="modal" data-target="#priceModal">Вилка цены</span>
-            <span class="btn btn-light recommendations-buttons text-secondary mb-1" data-toggle="modal" data-target="#sortModal">Сортировать по <i class="fa fa-sort" aria-hidden="true"></i></span>
-            <a class="btn btn-light recommendations-buttons text-secondary mb-1" data-toggle="collapse" href="#MapCollapse" role="button" aria-expanded="false" aria-controls="MapCollapse">
+            <span class="btn btn-light recommendations-buttons text-secondary mb-1 mr-2 pr-3 pl-3" data-toggle="modal" data-target="#priceModal">Вилка цены</span>
+            <span class="btn btn-light recommendations-buttons text-secondary mb-1 mr-2 pr-3 pl-3" data-toggle="modal" data-target="#sortModal">Сортировать по <i class="fa fa-sort" aria-hidden="true"></i></span>
+            <a class="btn btn-light recommendations-buttons text-secondary mb-1 mr-2 pr-3 pl-3" data-toggle="collapse" href="#MapCollapse" role="button" aria-expanded="false" aria-controls="MapCollapse">
             <i class="fa fa-map" aria-hidden="true"></i> Показать на карте
             </a>
             
@@ -302,11 +302,11 @@ $('#MapCollapse').on('shown.bs.collapse', function () {
 @forelse ($ads as $ad)
     <div class="row mb-4">
     <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 pb-3 ">
-        <div class="recommendation-img-wrap bg-light ad-map p-2" style="height:200px;">
+        <div class="recommendation-img-wrap bg-light ad-map" style="height:200px; overflow: hidden;">
             @if($ad->img != null)
-                <img class="img-fluid mx-auto d-block" src="{{URL::to('/')}}/storage/{{$ad->img}}" style="max-height:200px">
+                <img class="img-fluid mx-auto d-block fix-image" src="{{URL::to('/')}}/storage/{{$ad->img}}">
             @else
-                <img class="img-fluid mx-auto d-block" src="{{URL::to('/')}}/img/no-image.png" style="max-height:200px">
+                <img class="img-fluid mx-auto d-block fix-image" src="{{URL::to('/')}}/img/no-image.png">
             @endif
         </div>
     </div>
@@ -319,21 +319,14 @@ $('#MapCollapse').on('shown.bs.collapse', function () {
                 <a href="{{URL::to('/')}}/ad/{{$ad->id}}" class="text-dark">{{$ad->title}}</a>
              </p>
              </div>
-             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                <div class="row">
-                    <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 mb-3">
-                        <div class="ad-address-block ad-address text-primary pl-4">
-                            <i class="fa fa-map-marker" aria-hidden="true"></i> {{$ad->address}}
-                        </div>
+             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3">
+                    <div class="company-address-left pt-2 pb-2 pr-4">
+                        <i class="fa fa-map-marker pl-2 pr-2" aria-hidden="true"></i> {{$ad->address}}
                     </div>
-                    <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 mb-3">
-                        <div class="ad-address-block ad-address text-center text-primary">
-                            <span id="stars_1">{{$ad->stars}}</span> <i class="fa fa-star-o" aria-hidden="true"></i>
-                        </div>
+                    <div class="company-address-right pt-2 pb-2 pl-4 pr-4">
+                    {{$ad->stars}} <i class="fa fa-star-o" aria-hidden="true"></i>
                     </div>
-                </div>
             </div>
-            
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <?php echo Str::limit($ad->description, 120);?>
             </div>
@@ -399,7 +392,7 @@ $('body').on('click', '.get_more', function() {
                
                $.each(data.items, function(index, value) {
 
-                    $('#get_more').append('<div class="row mb-4"><div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 pb-3"><div class="recommendation-img-wrap bg-light ad-map" style="height:200px;"><img style="max-height:200px" class="img-fluid mx-auto d-block" src="' + value.img + '"></div></div><div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 pb-1"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"><p class="pb-1 company-page-company-link"><a href="{{URL::to('/')}}/ad/' + value.id + '" class="text-dark">' + value.title + '</a></p></div><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"><div class="row"><div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 mb-3"><div class="ad-address-block ad-address text-primary pl-4"><i class="fa fa-map-marker" aria-hidden="true"></i> ' + value.address + '</div></div><div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 mb-3"><div class="ad-address-block ad-address text-center text-primary"><span id="stars_1">' + value.stars + '</span> <i class="fa fa-star-o" aria-hidden="true"></i></div></div></div></div><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">' + value.description + '</div></div></div></div>')
+                    $('#get_more').append('<div class="row mb-4"><div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 pb-3"><div class="recommendation-img-wrap bg-light ad-map" style="height:200px; overflow: hidden;"><img class="img-fluid img-fluid mx-auto d-block" src="' + value.img + '"></div></div><div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 pb-1"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"><p class="pb-1 company-page-company-link"><a href="{{URL::to('/')}}/ad/' + value.id + '" class="text-dark">' + value.title + '</a></p></div><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3"><div class="company-address-left pt-2 pb-2 pr-4"><i class="fa fa-map-marker fa fa-map-marker pl-2 pr-2" aria-hidden="true"></i> ' + value.address + '</div><div class="company-address-right pt-2 pb-2 pl-4 pr-4">' + value.stars + ' <i class="fa fa-star-o" aria-hidden="true"></i></div></div><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">' + value.description + '</div></div></div></div>')
                });
                                 
                 
@@ -439,7 +432,7 @@ $('body').on('click', '.get_more', function() {
                
                $.each(data.items, function(index, value) {
 
-                    $('#get_more').append('<div class="row mb-4"><div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 pb-3"><div class="recommendation-img-wrap bg-light ad-map" style="height:200px;"><img style="max-height:200px" class="img-fluid mx-auto d-block" src="' + value.img + '"></div></div><div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 pb-1"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"><p class="pb-1 company-page-company-link"><a href="{{URL::to('/')}}/ad/' + value.id + '" class="text-dark">' + value.title + '</a></p></div><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"><div class="row"><div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 mb-3"><div class="ad-address-block ad-address text-primary pl-4"><i class="fa fa-map-marker" aria-hidden="true"></i> ' + value.address + '</div></div><div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 mb-3"><div class="ad-address-block ad-address text-center text-primary"><span id="stars_1">' + value.stars + '</span> <i class="fa fa-star-o" aria-hidden="true"></i></div></div></div></div><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">' + value.description + '</div></div></div></div>')
+                    $('#get_more').append('<div class="row mb-4"><div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 pb-3"><div class="recommendation-img-wrap bg-light ad-map" style="height:200px; overflow: hidden;"><img class="img-fluid img-fluid mx-auto d-block" src="' + value.img + '"></div></div><div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 pb-1"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"><p class="pb-1 company-page-company-link"><a href="{{URL::to('/')}}/ad/' + value.id + '" class="text-dark">' + value.title + '</a></p></div><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3"><div class="company-address-left pt-2 pb-2 pr-4"><i class="fa fa-map-marker fa fa-map-marker pl-2 pr-2" aria-hidden="true"></i> ' + value.address + '</div><div class="company-address-right pt-2 pb-2 pl-4 pr-4">' + value.stars + ' <i class="fa fa-star-o" aria-hidden="true"></i></div></div><div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">' + value.description + '</div></div></div></div>')
                });
                                 
                 

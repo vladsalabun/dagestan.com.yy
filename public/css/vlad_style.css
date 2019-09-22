@@ -1,6 +1,15 @@
-h1,h2 {
-    font-family: Roboto;
+@font-face{
+    font-family: 'Calibri';
+    src: url("../fonts/Calibri.ttf") format("ttf");
 }
+body {
+    font-family: Calibri;
+    font-size: 18px;
+}
+h1,h2 {
+    font-family: Calibri;
+}
+
 .no-underline {
     text-decoration: none;
 }
@@ -70,7 +79,9 @@ h1,h2 {
 }
 
 .top-search-category {
-    border-left: 1px #ccc solid;
+    padding-top: 9px !important;
+}
+.top-search-category-link {
 }
 .top-search-category-link:hover {
     text-decoration: none;
@@ -96,7 +107,7 @@ h1,h2 {
     border-radius: 50px;
 }
 .recommendation-link {
-    font-size: 17px;
+    font-size: 24px;
 }
 
 .recommendation-img-wrap {
@@ -116,9 +127,9 @@ h1,h2 {
     background-color: rgb(255, 255, 255, 0.8);
     float: left;
     margin-top: 2px;
-    margin-left: 10px;
+
     padding: 2px 7px 2px 7px; 
-    border-radius: 50px;
+    border-radius: 0px 50px 50px 0px;
 }
 .recommendation-on-img-right {
     background-color: rgb(255, 255, 255, 0.8);
@@ -128,24 +139,48 @@ h1,h2 {
     padding: 2px 7px 2px 7px; 
     border-radius: 50px;
 }
+.company-address-left {
+    background: #e7ebf6;
+    float: left;
+    margin-top: 2px;
+    color: #4485bd;
+    padding: 2px 7px 2px 7px; 
+    border-radius: 50px;
+}
+.company-address-right {
+    background: #e7ebf6;
+    color: #4485bd;
+    float: left;
+    margin-top: 2px;
+    margin-left: 10px;
+    padding: 2px 7px 2px 7px; 
+    border-radius: 50px;
+}
+.float-left {
+    float: left;
+}
 
+
+.image-round {
+    border-radius: 7px;
+}
 /* Одно объявление: */
 .ad_extend {
     font-weight: bold;
 }
 .ad-info { color: #6e98ca; }
 .ad-address-block { background: #e5ecf6; }
-.ad-address { padding: 7px 15px 7px 15px; border-radius: 50px; }
+.ad-address { padding: 7px 15px 7px 15px; border-radius: 7px; }
 
-.ad-stars-block { }
-.ad-stars { padding: 7px 15px 7px 15px; border-radius: 50px; }
+.ad-stars-block { background: #e5ecf6; }
+.ad-stars { padding: 7px 15px 7px 15px; border-radius: 7px; }
 .ad-stars-count-block { padding: 7px 15px 7px 15px; border-radius: 50px; }
 .ad-stars-count { }
 
 .ad-map { display: flex; align-items: center; justify-content: center; }
 
 .ad-tel-block { background: #599d50; color: #fff; }
-.ad-tel { padding: 7px 15px 7px 15px; border-radius: 50px; }
+.ad-tel { padding: 7px 15px 7px 15px; border-radius: 7px; }
 
 .give-star {
     font-size: 20px;
@@ -168,7 +203,7 @@ h1,h2 {
 }
 .company-page-company-link {
     color: #000;
-    font-size: 17px;
+    font-size: 22px;
     font-weight: bold;
 }
 .ad-address-block-companies-page { background: #e5ecf6; }
@@ -200,4 +235,32 @@ select {
 /* Категории поиска */
 .selected-category-for-search {
     font-weight: bold;
+}
+.ad-image-height {
+    max-height: 400px;
+}
+.abs {
+    margin-top: -3px;
+}
+
+
+
+/**/
+.fix-image {
+    min-height: 200px; 
+    min-width: 300px; 
+}
+.fix-big-image { 
+    min-height: 500px; 
+    min-width: 800px; 
+}
+
+
+@media (max-width: 365px) {
+    .mini-search {
+        font-size: 14px;
+    }
+    .mini-header {
+        font-size: 30px;
+    }
 }

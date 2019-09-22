@@ -22,14 +22,20 @@
             <p class="text-secondary">
                 <a href="{{URL::to('/')}}">Главная</a> / 
                 @if ($ad->type == 1)
-                    <a href="{{URL::to('/')}}/company?type=1">Организации</a> / 
+                    <a href="{{URL::to('/')}}/company?filter=organizations">Организации</a> / 
                 @else
-                    <a href="{{URL::to('/')}}/company?type=2">Специслисты</a> / 
+                    <a href="{{URL::to('/')}}/company?filter=specialists">Специалисты</a> / 
                 @endif
                 @if(count($ad->categories) > 0)
                     
                     @forelse ($ad->categories as $category)
-                        <a href="{{URL::to('/')}}/category?id={{$category->id}}">{{$category->name}}</a>
+                        <?php if ($ad->type == 1) { ?>
+                            <a href="{{URL::to('/')}}/company?categories_ids={{$category->id}}&filter=organizations">{{$category->name}}</a>
+                        <?php } else { ?>
+                            <a href="{{URL::to('/')}}/company?categories_ids={{$category->id}}&filter=specialists">{{$category->name}}</a>
+                        <?php } ?>
+
+                        
                     @empty
                     @endforelse
                 @endif
@@ -52,11 +58,11 @@
 
 <div class="container mt-3">
     <div class="row">
-        <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 ad-map mb-2 bg-light">
+        <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 ad-map mb-2 bg-light" style="height:400px; overflow: hidden;">
             @if ($ad->img != null)
-                <img class="img-fluid mx-auto d-block" src="{{URL::to('/')}}/storage/{{$ad->img}}">
+                <img class="fix-big-image img-fluid mx-auto d-block" src="{{URL::to('/')}}/storage/{{$ad->img}}">
             @else
-                <img class="img-fluid mx-auto d-block" src="{{URL::to('/')}}/img/no-image.png">
+                <img class="fix-big-image img-fluid mx-auto d-block" src="{{URL::to('/')}}/img/no-image.png">
             @endif
         </div>
         <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 ad-map mb-2">
@@ -110,8 +116,8 @@
 <div class="container mt-3 pt-4">
     <div class="row ad-info">
     
-        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 ad-tel-block text-center">
-            <div class="ad-tel">
+        <div class="text-center">
+            <div class="mr-3 ad-tel ad-tel-block float-left">
             <span>
                 <span class="hidden_num">
                     <i class="fa fa-phone" aria-hidden="true"></i>
@@ -119,27 +125,27 @@
                 </span> 
             </span>
             </div>
-        </div>
-        <div class="col-sm-12 col-md-5 col-lg-4 col-xl-4 ad-address-block text-center">
-            <div class="ad-address">
+    
+        <div class="mr-3 text-center float-left">
+            <div class="ad-address ad-address-block">
             <span>
                 <i class="fa fa-map-marker" aria-hidden="true"></i> {{$ad->address}}
             </span>
             </div>
         </div>
-        <div class="col-sm-6 col-md-2 col-lg-2 col-xl-2 ad-stars-block text-center">
-            <div class="ad-stars">
+        <div class="mr-3 text-center float-left">
+            <div class="ad-stars ad-stars-block">
             <span>
                 <span id="average_stars">{{$ad->stars}}</span> <i class="fa fa-star-o" aria-hidden="true"></i>
             </span>
             </div>
         </div>
-        <div class="col-sm-6 col-md-2 col-lg-3 col-xl-3 ad-stars-count-block text-center">
+        <div class="mr-3 ad-stars-count-block text-center float-left">
             <div class="ad-stars-count text-muted">
             <span>
-            @if ($stars == 1) {{$stars}} оценка
-            @elseif ($stars > 1 and $stars < 5) {{$stars}} оценки
-            @else {{$stars}} оценок
+            @if ($stars == 1) На основе {{$stars}} оценки
+            @elseif ($stars > 1 and $stars < 5) На основе {{$stars}} оценок
+            @else На основе {{$stars}} оценок
             @endif
             </span>
             </div>

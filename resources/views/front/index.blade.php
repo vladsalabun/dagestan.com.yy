@@ -75,12 +75,12 @@
 <!-- Рекомендации: --->
 <div class="container mt-5">
     <div class="row pt-5">
-        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6"><h3>Рекомендации для вас:</h3>
+        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6"><h3>Рекомендации для вас:</h3>
         </div>
-        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 text-right">
-            <a href="{{URL::to('/')}}"><span class="btn btn-primary recommendations-buttons">Все</span></a>
-            <a href="{{URL::to('/')}}?filter=organizations"><span class="btn btn-light recommendations-buttons text-secondary">Организации</span></a>
-            <a href="{{URL::to('/')}}?filter=specialists"><span class="btn btn-light recommendations-buttons text-secondary">Специалисты</span></a>
+        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 text-right">
+            <a href="{{URL::to('/')}}"><span class="btn <?php if( $filter != 'organizations' and $filter != 'specialists') {echo ' btn-primary ';}else { echo ' btn-light ';} ?> recommendations-buttons mr-2 pr-3 pl-3">Все</span></a>
+            <a href="{{URL::to('/')}}?filter=organizations"><span class="btn <?php if( $filter == 'organizations') {echo ' btn-primary text-white ';}else { echo ' btn-light text-secondary ';} ?> recommendations-buttons mr-2 pr-3 pl-3">Организации</span></a>
+            <a href="{{URL::to('/')}}?filter=specialists"><span class="btn <?php if( $filter == 'specialists') {echo ' btn-primary text-white';}else { echo ' btn-light text-secondary ';} ?> recommendations-buttons mr-1 pr-3 pl-3">Специалисты</span></a>
         </div>
     </div>
     
@@ -89,18 +89,18 @@
 @forelse ($ads as $ad)
  
     <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 pb-5">
-        <div class="recommendation-img-wrap bg-light ad-map" style="height:250px;">
+        <div class="recommendation-img-wrap bg-light ad-map image-round" style="height:200px; overflow: hidden;">
             @if ($ad->img != null)
-                <img class="img-fluid mx-auto d-block" src="{{URL::to('/')}}/storage/{{$ad->img}}" style="max-height:250px">
+                <img class="img-fluid mx-auto d-block fix-image" src="{{URL::to('/')}}/storage/{{$ad->img}}">
             @else
-                <img class="img-fluid mx-auto d-block" src="{{URL::to('/')}}/img/no-image.png">
+                <img class="img-fluid mx-auto d-block fix-image" src="{{URL::to('/')}}/img/no-image.png">
             @endif
             
             <div class="recommendation-on-img">
-                <div class="recommendation-on-img-left">
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>{{$ad->address}}
+                <div class="recommendation-on-img-left pt-2 pb-2 pr-4">
+                    <i class="fa fa-map-marker pl-2 pr-2" aria-hidden="true"></i> {{$ad->address}}
                 </div>
-                <div class="recommendation-on-img-right">
+                <div class="recommendation-on-img-right pt-2 pb-2 pl-4 pr-4">
                 {{$ad->stars}} <i class="fa fa-star-o" aria-hidden="true"></i>
                 </div>
             </div>
@@ -145,7 +145,8 @@ $('body').on('click', '.get_more', function() {
             
            $.each(data.items, function(index, value) {
 
-                $('#recommendation').append('<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 pb-5"><div class="recommendation-img-wrap bg-light ad-map" style="height:250px;"><img class="img-fluid mx-auto d-block" src="' + value.img + '" style="max-height:250px"><div class="recommendation-on-img"><div class="recommendation-on-img-left"><i class="fa fa-map-marker" aria-hidden="true"></i>' + value.address + '</div><div class="recommendation-on-img-right">' + value.stars + ' <i class="fa fa-star-o" aria-hidden="true"></i></div></div></div><div class="p-1"><p class="pt-3 pb-1 recommendation-link"><a href="{{URL::to('/')}}/ad/' + value.id + '">' + value.title + '</a></p>' + value.description + '</div></div>');
+
+    $('#recommendation').append('<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 pb-5"><div class="recommendation-img-wrap bg-light ad-map image-round" style="height:200px; overflow: hidden;"><img class="img-fluid mx-auto d-block fix-image" src="' + value.img + '"><div class="recommendation-on-img"><div class="recommendation-on-img-left pt-2 pb-2 pr-4"><i class="fa fa-map-marker pl-2 pr-2" aria-hidden="true"></i> ' + value.address + '</div><div class="recommendation-on-img-right pt-2 pb-2 pl-4 pr-4">' + value.stars + ' <i class="fa fa-star-o" aria-hidden="true"></i></div></div></div><div class="p-1"><p class="pt-3 pb-1 recommendation-link"><a href="{{URL::to('/')}}/ad/' + value.id + '">' + value.title + '</a></p>' + value.description + '</div></div>');
                
            }); 
             
