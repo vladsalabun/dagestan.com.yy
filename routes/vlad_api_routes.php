@@ -236,9 +236,9 @@ Route::get('/get_recommendations', function (Request $request) {
                 $array['items'][$key] = array(
                     'id' => $value->id,
                     'title' => $value->title,
-                    'description' => Str::limit($value->description),
+                    'description' => Str::limit($value->description, 120),
                     'img' => $img_src,
-                    'address' => $value->address,
+                    'address' => Str::limit($value->address, 20),
                     'stars' => $value->stars,
                 );
             }
@@ -283,7 +283,7 @@ Route::get('/get_more', function (Request $request) {
                     $array['items'][$key] = array(
                         'id' => $value->id,
                         'title' => $value->title,
-                        'description' => Str::limit($value->description),
+                        'description' => Str::limit($value->description, 120),
                         'img' => $img_src,
                         'address' => $value->address,
                         'stars' => $value->stars,

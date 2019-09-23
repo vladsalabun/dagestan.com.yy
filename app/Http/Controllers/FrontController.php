@@ -170,28 +170,40 @@ class FrontController extends Controller
             $openstreetmap_api_key = $openstreetmap_api_key[0]->option_value;
         }
         
-        // longitude
-        $longitude = OptionsController::get_option('longitude'); 
-
-        if(count($longitude) == 0) {
-            OptionsController::set_option('longitude', null);
-            $longitude = null;
-        } else {
-            $longitude = $longitude[0]->option_value;
+        // Узнаю город для рекомендаций:
+        $favourite_town = Cookie::get('favourite_town');
+        if($favourite_town == null) {
+            $favourite_town = $towns[0]->id;
         }
         
-        // latitude
-        $latitude = OptionsController::get_option('latitude'); 
+        $favourite_town_info = Towns::where('id',$favourite_town)->first();
+        if($favourite_town_info->longitude == null or $favourite_town_info->latitude == null) {
+            // longitude
+            $longitude = OptionsController::get_option('latitude'); 
 
-        if(count($latitude) == 0) {
-            OptionsController::set_option('latitude', null);
-            $latitude = null;
+            if(count($longitude) == 0) {
+                OptionsController::set_option('latitude', null);
+                $longitude = null;
+            } else {
+                $longitude = $longitude[0]->option_value;
+            }
+            
+            // latitude
+            $latitude = OptionsController::get_option('longitude'); 
+
+            if(count($latitude) == 0) {
+                OptionsController::set_option('longitude', null);
+                $latitude = null;
+            } else {
+                $latitude = $latitude[0]->option_value;
+            }
         } else {
-            $latitude = $latitude[0]->option_value;
+            $longitude = $favourite_town_info->longitude;
+            $latitude = $favourite_town_info->latitude;
         }
         
         $maxZoom = 18;
-        $initZoom = 10;
+        $initZoom = 12;
         
         $max_center = array($longitude, $latitude);
         

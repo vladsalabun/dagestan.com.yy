@@ -226,7 +226,7 @@ $('body').on('click', '#save_sorting', function() {
                 <div id="mapid" style="width: 100%; height: 400px; "></div>
 <script>
 
-	var mymap = L.map('mapid').setView([{{$max_center[0]}}, {{$max_center[1]}}], {{$initZoom}});
+	var mymap = L.map('mapid').setView([{{$max_center[1]}}, {{$max_center[0]}}], {{$initZoom}});
 
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={{$openstreetmap_api_key}}', {
 		maxZoom: {{$maxZoom}},

@@ -98,7 +98,7 @@
             
             <div class="recommendation-on-img">
                 <div class="recommendation-on-img-left pt-2 pb-2 pr-4">
-                    <i class="fa fa-map-marker pl-2 pr-2" aria-hidden="true"></i> {{$ad->address}}
+                    <i class="fa fa-map-marker pl-2 pr-2" aria-hidden="true"></i> <?php echo Str::limit($ad->address, 20);?>
                 </div>
                 <div class="recommendation-on-img-right pt-2 pb-2 pl-4 pr-4">
                 {{$ad->stars}} <i class="fa fa-star-o" aria-hidden="true"></i>
