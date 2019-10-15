@@ -14,11 +14,11 @@
                     @if($banner->img != null)
                         <?php $banner_count++; ?>
                     <div class="carousel-item @if($banner_count == 1) active @else @endif">
-                        <img class="d-block col-sm-6 col-md-6 col-lg-3 col-xl-3 img-fluid" src="{{URL::to('')}}/storage/{{$banner->img}}">
+                        <img class="d-block col-sm-6 col-md-6 col-lg-3 col-xl-3 img-fluid slider-link" src="{{URL::to('')}}/storage/{{$banner->img}}" link="{{$banner->url}}">
                     </div>
                     @else
                     <div class="carousel-item">
-                        <img class="d-block col-sm-6 col-md-6 col-lg-3 col-xl-3 img-fluid" src="{{URL::to('')}}/img/no-image.png">
+                        <img class="d-block col-sm-6 col-md-6 col-lg-3 col-xl-3 img-fluid slider-link" src="{{URL::to('')}}/img/no-image.png" link="{{$banner->url}}">
                     </div> 
                     @endif
                 
@@ -38,7 +38,6 @@
 </div>
 
 
-
 <script src="{{URL::to('/')}}/js/vlad_carousel.js"></script>
 <!-- /Карусель баннеров --->
 
@@ -50,11 +49,11 @@
 <?php $banner_count++; ?>
 @if($banner->img != null)
 <div class="carousel-item @if($banner_count == 1) active @else @endif">
-  <img class="d-block col-sm-6 col-md-6 col-lg-3 col-xl-3 img-fluid" src="{{URL::to('')}}/storage/{{$banner->img}}">
+  <img class="d-block col-sm-6 col-md-6 col-lg-3 col-xl-3 img-fluid slider-link" src="{{URL::to('')}}/storage/{{$banner->img}}" link="{{$banner->url}}">
 </div>
 @else
 <div class="carousel-item @if($banner_count == 1) active @else @endif">
-    <img class="d-block col-sm-6 col-md-6 col-lg-3 col-xl-3 img-fluid" src="{{URL::to('')}}/img/no-image.png">
+    <img class="d-block col-sm-6 col-md-6 col-lg-3 col-xl-3 img-fluid slider-link" src="{{URL::to('')}}/img/no-image.png" link="{{$banner->url}}">
 </div> 
         @endif
     @empty
@@ -70,6 +69,18 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
+
+<script>
+$(function() {
+  $('.slider-link').on('click', function() {
+    
+    if($(this).attr('link').length > 0) {
+        console.log('clicked! going to: ' + $(this).attr('link'));
+        window.location = $(this).attr('link');
+    }
+  });
+});
+</script>
 
 
 <!-- Рекомендации: --->

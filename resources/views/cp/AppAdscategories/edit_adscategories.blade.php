@@ -93,6 +93,19 @@
 
       <div class="modal-body">
       <h5 class="modal-title" id="exampleModalLabel">Вы уверены, что хотите удалить категорию?</h5>
+<?php 
+          if(count($children) > 0) {
+?>  
+    <p>Будут удалены так же дочерние категории:</p>
+    @forelse($children as $child)
+        - <a href="{{URL::to('/')}}/cp/edit_adscategories/{{$child->id}}">{{$child->name}}</a><br>
+    @empty
+    @endforelse
+<?php     
+          } 
+?>
+      
+      <p></p>
       </div>
       <div class="modal-footer">
         <input type="submit" name="delete" class="btn btn-danger" value="Удалить">

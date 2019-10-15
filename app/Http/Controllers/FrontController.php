@@ -137,7 +137,7 @@ class FrontController extends Controller
         }
         
         $maxZoom = 18;
-        $initZoom = 10;
+        $initZoom = 13;
         
         $max_center = array($longitude, $latitude);
         

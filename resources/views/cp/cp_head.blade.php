@@ -171,10 +171,6 @@
           <p>
               <a href="{{URL::to('/')}}/cp/map_config">Карта компаний</a>
           </p>
-
-          <p>
-              <a href="{{URL::to('/')}}/cp/ads_form_config">Оферта и правила</a>
-          </p>
           
           
           <!-- /.form-group -->

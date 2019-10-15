@@ -41,6 +41,7 @@ class BannersController extends Controller
    {
        $obj = new Banners;
        $obj->title = $request->title;
+       $obj->url = $request->url;
        $obj->save();  
 
         // Если загружен файл:
@@ -96,6 +97,7 @@ class BannersController extends Controller
            
            $obj = Banners::where('id', $request->id)->first();
            $obj->title = $request->title;
+           $obj->url = $request->url;
            
             // Удаление фото:
             if(isset($request->delete_img)) {

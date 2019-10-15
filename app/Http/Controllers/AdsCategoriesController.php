@@ -67,6 +67,10 @@ class AdsCategoriesController extends Controller
        if(isset($request->delete)) {
            
            // TODO: переместить все объявления из этой категории в Без категории
+           $children = AdsCategories::where('parent_id',$request->id)->get();
+           foreach ($children as $child) {
+               Adscategories::where('id', $child->id)->delete();
+           }
            
            Adscategories::where('id', $request->id)->delete();
            return redirect(URL::to('/').'/cp/adscategories');

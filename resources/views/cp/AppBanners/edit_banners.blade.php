@@ -26,7 +26,8 @@
 <tr>
     <th>
 
-<input type="text" class="form-control" value="{{$item->title}}" name="title" placeholder="Заголовок" required>
+<p><input type="text" class="form-control" value="{{$item->title}}" name="title" placeholder="Заголовок" required></p>
+<p><input type="text" class="form-control" value="{{$item->url}}" name="url" placeholder="Ссылка"></p>
     </th>
     <th style="width: 250px">
 @if ($item->img != null)    

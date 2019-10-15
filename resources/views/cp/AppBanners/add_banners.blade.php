@@ -25,7 +25,8 @@
 <tbody>
 <tr>
     <th>
-        <input type="text" class="form-control" value="" name="title" placeholder="Заголовок" required>
+        <p><input type="text" class="form-control" value="" name="title" placeholder="Заголовок" required></p>
+        <p><input type="text" class="form-control" value="" name="url" placeholder="Ссылка"></p>
     </th>
     <th style="width: 250px">
         <input type="file" name="img" id="exampleInputFile">

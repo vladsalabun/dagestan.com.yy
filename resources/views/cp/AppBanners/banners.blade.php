@@ -19,12 +19,14 @@
             <th style="width: 10px">ID:</th>
             <th>Титул:</th>
             <th>Изображение:</th>
+            <th>Ссылка:</th>
         </tr>
     @forelse ($items as $item)
         <tr>
             <td>{{$item->id}}</td>
             <td><a href="{{URL::to('/')}}/cp/edit_banners/{{$item->id}}">{{$item->title}}</a></td>
             <td><img src="{{URL::to('/')}}/storage/{{$item->img}}" style="max-width: 150px;"></td>
+            <td>{{$item->url}}</td>
         </tr>
     @empty
     @endforelse
