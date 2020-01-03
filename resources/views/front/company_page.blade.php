@@ -221,9 +221,9 @@ $('body').on('click', '#save_sorting', function() {
             
 <div class="row">
   <div class="col">
-    <div class="collapse multi-collapse" id="MapCollapse">
+    <div class="collapse multi-collapse" id="MapCollapse"  style="height: 600px;">
       <div class="card card-body bg-light text-center ad-map" id="companies_map">
-                <div id="mapid" style="width: 100%; height: 400px; "></div>
+                <div id="mapid" style="width: 100%; height: 600px; "></div>
 <script>
 
 	var mymap = L.map('mapid').setView([{{$max_center[1]}}, {{$max_center[0]}}], {{$initZoom}});

@@ -237,7 +237,7 @@ class FrontController extends Controller
                     $markers[$ad_tmp_id]['latitude'] = $ad_tmp->latitude;
                 }
             }
-            
+/*
             $markers = array(); 
             
             foreach ($ads as $ad_tmp_id => $ad_tmp) {
@@ -251,7 +251,7 @@ class FrontController extends Controller
                     $markers[$ad_tmp_id]['latitude'] = $ad_tmp->latitude;
                 }
             }
-        
+*/
         
         
 

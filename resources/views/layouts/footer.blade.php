@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="p-3 text-left text-white">
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        &copy Agargo.ru Сервис размещения организаций и специслистов
+                        &copy Agargo.ru Сервис размещения организаций и специалистов
                     </div>
                 </div>
             </div>
