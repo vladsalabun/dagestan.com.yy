@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('page_header')Объявления Дагестана@endsection
+@section('page_header') Сервис специалистов @endsection
 
 @section('content')
 

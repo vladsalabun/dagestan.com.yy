@@ -37,8 +37,8 @@
     <form method="post" action="{{URL::to('/')}}/post_add_ad" autocomplete="off" id="" enctype="multipart/form-data">
         {{ csrf_field() }}
         <input type="hidden" name="type" value="1">
-        <input type="hidden" id="lng1" name="longitude" value="">
-        <input type="hidden" id="lat1" name="latitude" value="">
+        <input type="hidden" id="lng1" name="latitude" value="">
+        <input type="hidden" id="lat1" name="longitude" value="">
 
 
 <div class="form-group mb-3">
@@ -182,8 +182,8 @@ mymap1.on('click', onMapClick1);
     <form method="post" action="{{URL::to('/')}}/post_add_ad" autocomplete="off" id="">
         {{ csrf_field() }}
         <input type="hidden" name="type" value="2">
-        <input type="hidden" id="lat2" name="latitude" value="">
-        <input type="hidden" id="lng2" name="longitude" value="">
+        <input type="hidden" id="lat2" name="longitude" value="">
+        <input type="hidden" id="lng2" name="latitude" value="">
 
 
 <div class="form-group mb-3">

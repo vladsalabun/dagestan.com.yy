@@ -103,13 +103,13 @@
     var markerGroup = L.layerGroup().addTo(mymap);
     
 <?php if ($item->longitude != null and $item->latitude != null) { ?>
-    L.marker([{{$item->longitude}},{{$item->latitude}}], {icon: greenIcon}).addTo(markerGroup);
+    L.marker([{{$item->latitude}}, {{$item->longitude}}], {icon: greenIcon}).addTo(markerGroup);
 <?php } ?>
     
 function onMapClick(e) {
 
-    $("#lng").val(e.latlng.lat.toFixed(8));
-    $("#lat").val(e.latlng.lng.toFixed(8));
+    $("#lng").val(e.latlng.lng.toFixed(8));
+    $("#lat").val(e.latlng.lat.toFixed(8));
 
     markerGroup.clearLayers();
     

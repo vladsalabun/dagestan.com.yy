@@ -106,8 +106,8 @@
     
 function onMapClick(e) {
 
-    $("#lat").val(e.latlng.lng.toFixed(8));
-    $("#lng").val(e.latlng.lat.toFixed(8));
+    $("#lng").val(e.latlng.lng.toFixed(8));
+    $("#lat").val(e.latlng.lat.toFixed(8));
 
     markerGroup.clearLayers();
     
